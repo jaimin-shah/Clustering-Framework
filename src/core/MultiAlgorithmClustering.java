@@ -48,29 +48,68 @@ public class MultiAlgorithmClustering {
 	public void runAlgorithms() {
 		
 		java.util.Iterator<String> it = selectedAlgorithms.iterator();
+                Thread t=null;
 		while(it.hasNext()) {
 			
 			//delegate the algorithms
 			switch(it.next()) {
 				case "DBSCAN":
-					new DBS(filePath);
+                                    t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                           new DBS(filePath);
+                                        }
+                                    });
 					break;
 				case "Cobweb":
-					new cobweb(filePath);
+                                     t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                          new cobweb(filePath); 
+                                        }
+                                    });
 					break;
-				case "KMeans":					
-					new kmeans(filePath);
+				case "KMeans":	
+                                     t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                           new kmeans(filePath);
+                                        }
+                                    });
 					break;
-				case "Hierarchial":	
-					new hierarchy(filePath);
+				case "Hierarchial":
+                                     t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                          new hierarchy(filePath); 
+                                        }
+                                    });
 					break;
 				case "Farthest First":
-					new farthest(filePath);
+                                     t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                           new farthest(filePath);
+                                        }
+                                    });
 					break;
 				case "EM":	
-					new em(filePath);
+                                     t=new Thread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                           new em(filePath);
+                                        }
+                                    });
 					break;
+                           
 			}
+                     t.start();
 		}
 	}
 }

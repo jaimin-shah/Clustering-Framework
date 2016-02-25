@@ -43,10 +43,18 @@ DBSCAN DBS;
     
     // get cluster membership for each instance 
     for (int i = 0; i < dataa.numInstances(); i++) { 
-      System.out.println( dataa.instance(i) + " is in cluster " + DBS.clusterInstance(dataa.instance(i)) + 1); 
-
+        try
+        {
+          System.out.println( dataa.instance(i) + " is in cluster " + DBS.clusterInstance(dataa.instance(i)) );   
+        }
+        catch(Exception e)
+        {
+            
+        }
+      
     } 
-    new graph(dataa, eval, 2, 1);
+
+       new graph(dataa, eval, 1, 0);
    }
 
 }

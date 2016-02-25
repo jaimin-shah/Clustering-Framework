@@ -28,6 +28,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
 
 import weka.clusterers.ClusterEvaluation;
+import weka.core.Attribute;
 import weka.core.Instances;
 
 public class graph {
@@ -48,7 +49,14 @@ public class graph {
          double[] assign=eval.getClusterAssignments();
          for(int i=0;i<xdata.length;i++)
          {
-             series[(int)assign[i]].add(xdata[i], ydata[i]);
+             try{
+                series[(int)assign[i]].add(xdata[i], ydata[i]);
+             }
+             catch(Exception e)
+             {
+                 
+             }
+             
          }
          JFreeChart chart = ChartFactory.createScatterPlot("Cluster Visualization",data.attribute(x).name(),data.attribute(y).name(), dataset);
          
@@ -58,6 +66,31 @@ public class graph {
          ChartPanel chartPanel = new ChartPanel(chart);
          Shape cross = ShapeUtilities.createDiagonalCross((float)3,(float) 0.02);
          XYPlot plot = (XYPlot) chart.getPlot();
+         if(data.attribute(x).isNominal())
+         {
+             Attribute att=data.attribute(x);
+             int length=(data.attribute(x).numValues());
+             String[] s=new String[length];
+             for(int i=0;i<s.length;i++)
+             {
+                 s[i]=att.value(i);
+             }
+             SymbolAxis sa = new SymbolAxis(att.name(),s);
+             plot.setDomainAxis(sa);
+         }
+         if(data.attribute(y).isNominal())
+         {
+             Attribute att=data.attribute(y);
+             int length=(data.attribute(y).numValues());
+             String[] s=new String[length];
+             for(int i=0;i<s.length;i++)
+             {
+                 s[i]=att.value(i);
+             }
+             SymbolAxis sa = new SymbolAxis(att.name(),s);
+             plot.setRangeAxis(sa);
+         }
+         
          //SymbolAxis sa = new SymbolAxis("AxisLabel",new String[]{"Category1","Category2","Category3"});
          //plot.setDomainAxis(sa);
          XYItemRenderer renderer = plot.getRenderer();
