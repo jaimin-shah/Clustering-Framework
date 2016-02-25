@@ -2,7 +2,7 @@
 
 package clusterers;
 
-import visualize.*;
+import visualize.graph;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.DBSCAN;
 import weka.clusterers.SimpleKMeans;
@@ -46,7 +46,7 @@ DBSCAN DBS;
       System.out.println( dataa.instance(i) + " is in cluster " + DBS.clusterInstance(dataa.instance(i)) + 1); 
 
     } 
-       new graph(dataa, eval, 2, 1);
+    new graph(dataa, eval, 2, 1);
    }
-  
+
 }

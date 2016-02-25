@@ -8,8 +8,6 @@ import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
-
-
 public class kmeans {
 	
 	private static String filePath;
