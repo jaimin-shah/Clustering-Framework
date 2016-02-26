@@ -174,23 +174,30 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 			dispatchAlgorithms.setAlgorithm(evntSrc.getText());
 		}
 		else if(e.getSource() == btnChooseFiles) {
+			/*
+			 * file chooser will return File[], pass to dispachAlgorithms object
+			 * setter as soon as approved.
+			 */
 			int opt = selectFiles.showDialog(fr, "Done");
 			if(opt == JFileChooser.APPROVE_OPTION) {
 				dispatchAlgorithms.setSelectedFiles(selectFiles.getSelectedFiles());
 			}
 		}
 		else if(e.getSource() == btnRun) {
-			//work here
-			if(selectedAlgorithm == null) {
+			/*
+			 * selected algorithm and files are attributes of dispatch algorithms
+			 */
+			if(dispatchAlgorithms.getAlgorithm() == null) {
 				JOptionPane.showMessageDialog(fr, "No algorithm Selected!!",
 						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-			else if(selectedFiles.length == 0) {
+			else if(dispatchAlgorithms.getFiles().length == 0) {
 				JOptionPane.showMessageDialog(fr, "No files Selected!!",
 						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				
+				//fire algorithms
+				dispatchAlgorithms.runAlgorithm();
 			}
 		}
 	}

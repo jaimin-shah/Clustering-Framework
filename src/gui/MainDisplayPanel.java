@@ -30,9 +30,6 @@ import javax.swing.filechooser.FileFilter;
 
 public class MainDisplayPanel extends JPanel implements ActionListener, ItemListener {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2443223770957129907L;
 	
 	//this frame
@@ -66,7 +63,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
 	//file chooser
-	JFileChooser selectFiles = new JFileChooser("..\\test_data");
+	JFileChooser selectFiles = new JFileChooser("..\\test_data\\");
 	
 	//selected file-path on which clustering needs to be done
 	String selectedFilePath = null;
