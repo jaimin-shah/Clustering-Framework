@@ -2,7 +2,9 @@
 
 package clusterers;
 
+import gui.AttributeSelection_Stats;
 import java.net.URI;
+import weka.clusterers.ClusterEvaluation;
 
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
@@ -32,18 +34,20 @@ SimpleKMeans kMeans;
     kMeans  = new SimpleKMeans();
     kMeans.setNumClusters(3);
     kMeans.buildClusterer(dataa); 
-
+    ClusterEvaluation eval=new ClusterEvaluation();
+    eval.setClusterer(kMeans);
+    eval.evaluateClusterer(dataa);
+    double p[]=eval.getClusterAssignments();
+    
+    new AttributeSelection_Stats(dataa, eval, "KMEANS", p);
     // print out the cluster centroids
-    Instances centroids = kMeans.getClusterCentroids(); 
-    for (int i = 0; i < centroids.numInstances(); i++) { 
-      System.out.println( "Centroid " + i+1 + ": " + centroids.instance(i)); 
-    } 
+//    Instances centroids = kMeans.getClusterCentroids(); 
+//    for (int i = 0; i < centroids.numInstances(); i++) { 
+//      System.out.println( "Centroid " + i+1 + ": " + centroids.instance(i)); 
+//    } 
 
-    // get cluster membership for each instance 
-    for (int i = 0; i < dataa.numInstances(); i++) { 
-      System.out.println( dataa.instance(i) + " is in cluster " + kMeans.clusterInstance(dataa.instance(i)) + 1); 
-
-    } 
+     
+            
    }
 
 }

@@ -5,6 +5,7 @@
 
 package clusterers;
 
+import gui.AttributeSelection_Stats;
 import java.io.File;
 import weka.clusterers.*;
 import weka.clusterers.EM;
@@ -38,11 +39,8 @@ public class em  {
        eval.setClusterer(algo);
        eval.evaluateClusterer(dataa);
        double[] p=eval.getClusterAssignments();
-       System.out.println(eval.getNumClusters());
-       for(int i=0;i<p.length;i++)
-        {
-            System.out.println(i+" "+(int)p[i]);
-        }
+       new AttributeSelection_Stats(dataa, eval, "EM", p);
+       
        
        
     }

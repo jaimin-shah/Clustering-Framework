@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package clusterers;
+
+import gui.*;
 import java.util.Arrays;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.Cobweb;
@@ -38,13 +40,8 @@ public class cobweb {
        eval.setClusterer(algo);
        eval.evaluateClusterer(dataa);
         double[] p=eval.getClusterAssignments();
+        new AttributeSelection_Stats(dataa, eval, "COBWEB", p);
         
-        System.out.println(eval.getNumClusters());
-        for(int i=0;i<p.length;i++)
-        {
-            System.out.println(i+" "+(int)p[i]);
-        }
-       
        
     }
     

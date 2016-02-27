@@ -2,6 +2,7 @@
 
 package clusterers;
 
+import gui.AttributeSelection_Stats;
 import visualize.*;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.DBSCAN;
@@ -39,20 +40,10 @@ DBSCAN DBS;
     eval.setClusterer(DBS);
 
     eval.evaluateClusterer(dataa);
-     System.out.println("# of clusters: " + eval.getNumClusters()); 
+    double[] p=eval.getClusterAssignments();
+    new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
     
-    // get cluster membership for each instance 
-    for (int i = 0; i < dataa.numInstances(); i++) { 
-        try
-        {
-          System.out.println( dataa.instance(i) + " is in cluster " + DBS.clusterInstance(dataa.instance(i)) );   
-        }
-        catch(Exception e)
-        {
-            
-        }
-      
-    } 
+    
        new graph(dataa, eval, 1, 0);
    }
   
