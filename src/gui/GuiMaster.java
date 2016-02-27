@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class GuiMaster extends JFrame {
 	
@@ -26,7 +28,9 @@ public class GuiMaster extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+                setlook();
 		SwingUtilities.invokeLater(new Runnable() {
+                    
 			
 			@Override
 			public void run() {
@@ -39,5 +43,25 @@ public class GuiMaster extends JFrame {
 			}
 		});
 	}
+        static void setlook()
+        {
+            try {
+                // Set System L&F
+                UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+                } 
+                catch (UnsupportedLookAndFeelException e) {
+                   // handle exception
+                }
+                catch (ClassNotFoundException e) {
+                   // handle exception
+                }
+                catch (InstantiationException e) {
+                   // handle exception
+                }
+                catch (IllegalAccessException e) {
+                   // handle exception
+                }
+        }
 
 }

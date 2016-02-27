@@ -32,7 +32,7 @@ import weka.core.Attribute;
 import weka.core.Instances;
 
 public class graph {
-     public graph(Instances data,ClusterEvaluation eval,int x,int y) throws IOException
+     public graph(Instances data,ClusterEvaluation eval,int x,int y,String heading) throws IOException
     {
         JScrollPane pane = null;
         JFrame frame=new JFrame();
@@ -58,7 +58,7 @@ public class graph {
              }
              
          }
-         JFreeChart chart = ChartFactory.createScatterPlot("Cluster Visualization",data.attribute(x).name(),data.attribute(y).name(), dataset);
+         JFreeChart chart = ChartFactory.createScatterPlot(heading,data.attribute(x).name(),data.attribute(y).name(), dataset);
          
          
          
