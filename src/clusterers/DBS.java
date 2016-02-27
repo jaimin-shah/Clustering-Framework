@@ -2,12 +2,9 @@
 
 package clusterers;
 
-<<<<<<< HEAD
-import visualize.graph;
-=======
 import gui.AttributeSelection_Stats;
 import visualize.*;
->>>>>>> e6dc4eeb1160ae0874882c3d526d5b2c41f2779c
+
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.DBSCAN;
 import weka.clusterers.SimpleKMeans;
