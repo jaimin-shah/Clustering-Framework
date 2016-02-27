@@ -5,6 +5,7 @@
  */
 package clusterers;
 
+import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.MakeDensityBasedClusterer;
 import weka.core.Instances;
@@ -34,13 +35,9 @@ public class density {
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);
        eval.evaluateClusterer(dataa);
-        double[] p=eval.getClusterAssignments();
+       double[] p=eval.getClusterAssignments();
+       new AttributeSelection_Stats(dataa, eval,"Density Based Clustering" , p);  
         
-        System.out.println(eval.getNumClusters());
-        for(int i=0;i<p.length;i++)
-        {
-            System.out.println(i+" "+(int)p[i]);
-        }
        
     }
     
