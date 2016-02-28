@@ -27,25 +27,25 @@ public class DBS {
 		}
 	}
    private void compute() throws Exception {
-Instances dataa = DataSource.read(filePath); 
+		Instances dataa = DataSource.read(filePath); 
 
-DBSCAN DBS;
-    // create the model 
-    DBS  = new DBSCAN();
-  
-   
-    ClusterEvaluation eval = new ClusterEvaluation();
-    DBS.buildClusterer(dataa); 
+		DBSCAN DBS;
+		// create the model 
+		DBS  = new DBSCAN();
 
-    // print out the cluster centroids
-    eval.setClusterer(DBS);
 
-    eval.evaluateClusterer(dataa);
-    double[] p=eval.getClusterAssignments();
-    new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
-    
-    
-       
+		ClusterEvaluation eval = new ClusterEvaluation();
+		DBS.buildClusterer(dataa); 
+
+		// print out the cluster centroids
+		eval.setClusterer(DBS);
+
+		eval.evaluateClusterer(dataa);
+		double[] p=eval.getClusterAssignments();
+		new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
+
+		new graph(dataa, eval, 1, 0);
+
    }
 
 }

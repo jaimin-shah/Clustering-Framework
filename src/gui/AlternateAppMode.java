@@ -5,25 +5,35 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class AlternateAppMode extends JPanel implements ActionListener {
-			
-	/**
-	 * 
-	 */
+import core.MultiDataClustering;
+
+public class AlternateAppMode extends JPanel implements ActionListener {			
+
 	private static final long serialVersionUID = 6763236354614599803L;
 	
 	//this frame
 	JFrame fr;
+	
+	//file chooser
+	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
 	
 	//panels
 	//components holding panels
@@ -35,6 +45,7 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	
 	//Run Clustering
 	JButton btnRun = new JButton("Run Clustering");
+	JButton btnChooseFiles = new JButton("Choose Files");
 	
 	//labels
 	//display mode of operation
@@ -42,9 +53,23 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	
 	//radio buttons
 	//select an algorithm
-	JRadioButton radioKmeans, radioXmeans, radioDbscan, radioFarthestFirst;
+	JRadioButton radioKmeans, radioHierarchial, radioDbscan, radioFarthestFirst;
 	JRadioButton radioEm, radioCobweb;
 	ButtonGroup groupAlgorithms = new ButtonGroup();
+	
+	String selectedAlgorithm = null;
+	
+	int noOfFilesRequest = 1;
+	
+	
+	//file chooser returns a no. of files
+	File[] f;
+	
+	/*controller on which algorithm will be dispatched
+	 * will start 5 worker threads shut them when gui mode changed
+	 */	
+	MultiDataClustering dispatchAlgorithms = new MultiDataClustering();
+	
 	
 	public AlternateAppMode(JFrame fr) {
 		this.fr = fr;
@@ -52,13 +77,23 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		//set layout of this panel
 		setLayout(new BorderLayout());
 		
+		//radio buttons
 		//initialize components
 		radioKmeans = new JRadioButton("KMeans");
-		radioXmeans = new JRadioButton("XMeans");
+		radioHierarchial = new JRadioButton("Hierarchial");
 		radioEm = new JRadioButton("Em");
 		radioCobweb = new JRadioButton("CobWeb");
 		radioFarthestFirst = new JRadioButton("Farthest First");
 		radioDbscan = new JRadioButton("DBSCAN");
+		
+		selectFiles.setMultiSelectionEnabled(true);
+		
+		//customize file filter for specific files
+		selectFiles.setAcceptAllFileFilterUsed(false);
+		selectFiles.addChoosableFileFilter(new ClusteringFileSelectionFilter());
+		
+		//disable run button
+		btnRun.setEnabled(false);
 		
 		//add component listeners
 		addRespectiveListeners();
@@ -70,7 +105,17 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	//add component's listeners
 	private void addRespectiveListeners() {
 		// TODO Auto-generated method stub
+		btnChooseFiles.addActionListener(this);
+		btnRun.addActionListener(this);
 		btnswitchMode.addActionListener(this);
+		
+		radioKmeans.addActionListener(this);
+		radioCobweb.addActionListener(this);
+		radioDbscan.addActionListener(this);
+		radioFarthestFirst.addActionListener(this);
+		radioEm.addActionListener(this);
+		radioHierarchial.addActionListener(this);
+		
 	}
 
 	private void addComponents() {
@@ -89,14 +134,18 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		groupAlgorithms.add(radioEm);
 		groupAlgorithms.add(radioFarthestFirst);
 		groupAlgorithms.add(radioKmeans);
-		groupAlgorithms.add(radioXmeans);
+		groupAlgorithms.add(radioHierarchial);
 		
 		componentsPane.add(radioCobweb);
 		componentsPane.add(radioDbscan);
 		componentsPane.add(radioEm);
 		componentsPane.add(radioFarthestFirst);
 		componentsPane.add(radioKmeans);
-		componentsPane.add(radioXmeans);
+		componentsPane.add(radioHierarchial);
+		
+		componentsPane.add(new JLabel("MAX 5 Files at a time"));
+		
+		componentsPane.add(btnChooseFiles);
 		
 		//button to run clustering algorithm
 		componentsPane.add(btnRun);
@@ -109,9 +158,64 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == btnswitchMode) {
+			//stop the worker threads that were started
+			dispatchAlgorithms.stopWorkerThreads();
+			
 			fr.remove(this);
 			fr.add(new MainDisplayPanel(fr));
 			fr.revalidate();
 		}
+		else if(e.getSource() == radioKmeans || e.getSource() == radioDbscan
+				|| e.getSource() == radioHierarchial || e.getSource() == radioEm
+				|| e.getSource() == radioFarthestFirst
+				|| e.getSource() == radioCobweb) {
+			
+			JRadioButton evntSrc = (JRadioButton)e.getSource();
+			dispatchAlgorithms.setAlgorithm(evntSrc.getText());
+			
+			//check if files was choosen? if yes enable run button
+			if(dispatchAlgorithms.getFiles() != null && dispatchAlgorithms.getFiles().length != 0) {
+				btnRun.setEnabled(true);
+			}
+		}
+		else if(e.getSource() == btnChooseFiles) {
+			/*
+			 * file chooser will return File[], pass to dispachAlgorithms object
+			 * setter as soon as approved.
+			 */
+			int opt = selectFiles.showDialog(fr, "Done");
+			if(opt == JFileChooser.APPROVE_OPTION) {
+				f = selectFiles.getSelectedFiles();
+				if(f.length > 5) {
+					JOptionPane.showMessageDialog(fr, "Max. 5 files at a time!!", 
+							"ERROR", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					//check if algo was selected? if yes enable button
+					if(dispatchAlgorithms.getAlgorithm() != null) {
+						btnRun.setEnabled(true);
+					}
+					dispatchAlgorithms.setSelectedFiles(f);
+				}
+			}
+		}
+		else if(e.getSource() == btnRun) {
+			/*
+			 * selected algorithm and files are attributes of dispatch algorithms
+			 */
+			if(dispatchAlgorithms == null || dispatchAlgorithms.getAlgorithm() == null) {
+				JOptionPane.showMessageDialog(fr, "No algorithm Selected!!",
+						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+			else if(dispatchAlgorithms == null || dispatchAlgorithms.getFiles().length == 0) {
+				JOptionPane.showMessageDialog(fr, "No files Selected!!",
+						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				//fire algorithms
+				dispatchAlgorithms.runAlgorithm();
+			}
+		}
 	}
+
 }
