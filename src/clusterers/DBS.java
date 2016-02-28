@@ -44,8 +44,6 @@ public class DBS {
 		double[] p=eval.getClusterAssignments();
 		new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
 
-		new graph(dataa, eval, 1, 0);
-
    }
 
 }
