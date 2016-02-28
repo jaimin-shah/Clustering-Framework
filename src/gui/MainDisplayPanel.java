@@ -30,9 +30,6 @@ import javax.swing.filechooser.FileFilter;
 
 public class MainDisplayPanel extends JPanel implements ActionListener, ItemListener {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2443223770957129907L;
 	
 	//this frame
@@ -66,12 +63,9 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
 	//file chooser
-	JFileChooser selectFiles = new JFileChooser("\\test_data");
-	//check file extension
-	Pattern pattern = Pattern.compile(".+\\.(csv|arff|xrff)");
-	Matcher match;
+	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
 	
-	//selected file-path uri on which clustering needs to be done
+	//selected file-path on which clustering needs to be done
 	String selectedFilePath = null;
 	
 	//controller that dispatches algorithms on data set
@@ -96,7 +90,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
-		selectFiles.addChoosableFileFilter(new clusteringFileFilter());
+		selectFiles.addChoosableFileFilter(new ClusteringFileSelectionFilter());
 		
 		//add all component's respective listeners	
 		addRespectiveListeners();
@@ -175,7 +169,6 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			if(opt == JFileChooser.APPROVE_OPTION) {
 				File file = selectFiles.getSelectedFile();
 				lblFilePath.setText(file.getName());
-				//System.out.println(file.getPath());
 				selectedFilePath = file.getPath();
 				componentsPane.revalidate();
 			}
@@ -244,26 +237,5 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			
 		}		
 	}
-	
-	
-	//custom file filter for showing only csv, arff, xrff files
-	private class clusteringFileFilter extends FileFilter {
 
-		@Override
-		public boolean accept(File f) {
-			// TODO Auto-generated method stub
-			if(f.isDirectory()) {
-				return true;
-			}
-			match = pattern.matcher(f.getName());
-			return match.matches();
-		}
-
-		@Override
-		public String getDescription() {
-			// TODO Auto-generated method stub
-			return "ARFF, CSV and XRFF files";
-		}
-		
-	}
 }
