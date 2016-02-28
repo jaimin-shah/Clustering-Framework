@@ -34,7 +34,7 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 	JFrame fr;
 	
 	//file chooser
-	JFileChooser selectFiles = new JFileChooser();
+	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
 	
 	//panels
 	//components holding panels
@@ -187,11 +187,11 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 			/*
 			 * selected algorithm and files are attributes of dispatch algorithms
 			 */
-			if(dispatchAlgorithms.getAlgorithm() == null) {
+			if(dispatchAlgorithms == null || dispatchAlgorithms.getAlgorithm() == null) {
 				JOptionPane.showMessageDialog(fr, "No algorithm Selected!!",
 						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-			else if(dispatchAlgorithms.getFiles().length == 0) {
+			else if(dispatchAlgorithms == null || dispatchAlgorithms.getFiles().length == 0) {
 				JOptionPane.showMessageDialog(fr, "No files Selected!!",
 						"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
 			}

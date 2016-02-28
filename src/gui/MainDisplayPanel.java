@@ -63,7 +63,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
 	//file chooser
-	JFileChooser selectFiles = new JFileChooser("..\\test_data\\");
+	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
 	
 	//selected file-path on which clustering needs to be done
 	String selectedFilePath = null;
