@@ -55,7 +55,7 @@ public class graph {
         XYSeries series[] = new XYSeries[num];
         for(int i=0;i<num;i++)
         {
-            series[i]=new XYSeries(i+1);
+            series[i]=new XYSeries(i);
             dataset.addSeries(series[i]);
         }
          double[] xdata=data.attributeToDoubleArray(x);
