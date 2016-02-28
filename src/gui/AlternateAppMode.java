@@ -25,8 +25,7 @@ import javax.swing.event.ChangeListener;
 
 import core.MultiDataClustering;
 
-public class AlternateAppMode extends JPanel implements ActionListener,
-															ChangeListener {			
+public class AlternateAppMode extends JPanel implements ActionListener {			
 
 	private static final long serialVersionUID = 6763236354614599803L;
 	
@@ -60,15 +59,15 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 	
 	String selectedAlgorithm = null;
 	
-	//select no of files max 5 to run algorithm 
-	JSpinner noOfFiles;
-	
 	int noOfFilesRequest = 1;
 	
-	//selected files
-	File[] selectedFiles;
 	
-	//controller on which algorithm will be dispatched
+	//file chooser returns a no. of files
+	File[] f;
+	
+	/*controller on which algorithm will be dispatched
+	 * will start 5 worker threads shut them when gui mode changed
+	 */	
 	MultiDataClustering dispatchAlgorithms = new MultiDataClustering();
 	
 	
@@ -89,12 +88,12 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 		
 		selectFiles.setMultiSelectionEnabled(true);
 		
-		//max 5 files
-		noOfFiles = new JSpinner(new SpinnerNumberModel(1, 1, 5, 1));
-		
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
 		selectFiles.addChoosableFileFilter(new ClusteringFileSelectionFilter());
+		
+		//disable run button
+		btnRun.setEnabled(false);
 		
 		//add component listeners
 		addRespectiveListeners();
@@ -109,7 +108,6 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 		btnChooseFiles.addActionListener(this);
 		btnRun.addActionListener(this);
 		btnswitchMode.addActionListener(this);
-		noOfFiles.addChangeListener(this);
 		
 		radioKmeans.addActionListener(this);
 		radioCobweb.addActionListener(this);
@@ -143,10 +141,9 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 		componentsPane.add(radioEm);
 		componentsPane.add(radioFarthestFirst);
 		componentsPane.add(radioKmeans);
+		componentsPane.add(radioHierarchial);
 		
-		componentsPane.add(new JLabel("Set no. of Files to run clustering"));
-		
-		componentsPane.add(noOfFiles);
+		componentsPane.add(new JLabel("MAX 5 Files at a time"));
 		
 		componentsPane.add(btnChooseFiles);
 		
@@ -161,6 +158,9 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == btnswitchMode) {
+			//stop the worker threads that were started
+			dispatchAlgorithms.stopWorkerThreads();
+			
 			fr.remove(this);
 			fr.add(new MainDisplayPanel(fr));
 			fr.revalidate();
@@ -172,6 +172,11 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 			
 			JRadioButton evntSrc = (JRadioButton)e.getSource();
 			dispatchAlgorithms.setAlgorithm(evntSrc.getText());
+			
+			//check if files was choosen? if yes enable run button
+			if(dispatchAlgorithms.getFiles() != null && dispatchAlgorithms.getFiles().length != 0) {
+				btnRun.setEnabled(true);
+			}
 		}
 		else if(e.getSource() == btnChooseFiles) {
 			/*
@@ -180,7 +185,18 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 			 */
 			int opt = selectFiles.showDialog(fr, "Done");
 			if(opt == JFileChooser.APPROVE_OPTION) {
-				dispatchAlgorithms.setSelectedFiles(selectFiles.getSelectedFiles());
+				f = selectFiles.getSelectedFiles();
+				if(f.length > 5) {
+					JOptionPane.showMessageDialog(fr, "Max. 5 files at a time!!", 
+							"ERROR", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					//check if algo was selected? if yes enable button
+					if(dispatchAlgorithms.getAlgorithm() != null) {
+						btnRun.setEnabled(true);
+					}
+					dispatchAlgorithms.setSelectedFiles(f);
+				}
 			}
 		}
 		else if(e.getSource() == btnRun) {
@@ -202,12 +218,4 @@ public class AlternateAppMode extends JPanel implements ActionListener,
 		}
 	}
 
-	//change in no of files selection
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource() == noOfFiles) {
-			noOfFilesRequest = (int)((JSpinner)e.getSource()).getValue();
-		}
-	}
 }
