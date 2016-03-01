@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.ButtonGroup;
@@ -73,6 +76,13 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	
 	public AlternateAppMode(JFrame fr) {
 		this.fr = fr;
+		
+		//shut the workers if window is closed
+		this.fr.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent w) {
+				dispatchAlgorithms.stopWorkerThreads();
+			}
+		});
 		
 		//set layout of this panel
 		setLayout(new BorderLayout());

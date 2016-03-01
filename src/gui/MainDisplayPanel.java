@@ -11,6 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.io.File;
 import java.net.URI;
 import java.util.HashSet;
@@ -76,6 +80,16 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		
 		//Frame tasks
 		this.fr = fr;
+
+		//close worker threads if close button on frame is pressed
+		this.fr.addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(WindowEvent w) {
+				if(dispatchAlgorithms != null) {
+					dispatchAlgorithms.stopWorkerThreads();
+				}
+			}
+		});
 				
 		//this panel tasks
 		setLayout(new BorderLayout());
@@ -204,6 +218,9 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		}
 		else if(e.getSource() == btnswitchMode) {
 			//switch gui
+			if(dispatchAlgorithms != null) {
+				dispatchAlgorithms.stopWorkerThreads();
+			}
 			fr.remove(this);
 			fr.add(new AlternateAppMode(fr));
 			fr.revalidate();
@@ -222,7 +239,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		// TODO Auto-generated method stub
 		JCheckBox cb = (JCheckBox) e.getItem();
 		
-		//create instance of dispatcher occurs only first time a selection is made
+		//create instance of dispatcher, occurs only first time a selection is made
 		if(dispatchAlgorithms == null) {
 			dispatchAlgorithms = new MultiAlgorithmClustering();
 			dispatchAlgorithms.addAlgorithms(cb.getText());

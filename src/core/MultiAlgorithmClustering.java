@@ -3,6 +3,9 @@ package core;
 import java.net.URI;
 import clusterers.*;
 import java.util.HashSet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JCheckBox;
 import javax.swing.text.html.HTMLDocument.Iterator;
@@ -15,8 +18,20 @@ public class MultiAlgorithmClustering {
 	//algorithms to be run on data
 	HashSet<String> selectedAlgorithms;
 	
+	//for creating a pool of threads
+	ExecutorService executor;
+	
+	//constructor
 	public MultiAlgorithmClustering() {
 		selectedAlgorithms = new HashSet<String>();
+		executor = Executors.newFixedThreadPool(7);
+		System.out.println("started 7 worker threads " + Runtime.getRuntime().availableProcessors());
+	}
+	
+	//stop worker threads
+	public void stopWorkerThreads() {
+		System.out.println("Shutting 7 workers");
+		executor.shutdown();
 	}
 	
 	//add algos to list
@@ -48,68 +63,82 @@ public class MultiAlgorithmClustering {
 	public void runAlgorithms() {
 		
 		java.util.Iterator<String> it = selectedAlgorithms.iterator();
-                Thread t=null;
+            
+		CountDownLatch pendingAlgorithms = new CountDownLatch(selectedAlgorithms.size());
+		
 		while(it.hasNext()) {
 			
 			//delegate the algorithms
 			switch(it.next()) {
 				case "DBSCAN":
-                                    t=new Thread(new Runnable() {
+                                    executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                            new DBS(filePath);
+                                           pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
 				case "Cobweb":
-                                     t=new Thread(new Runnable() {
+                                     executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                           new cobweb(filePath); 
+                                          pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
 				case "KMeans":	
-                                     t=new Thread(new Runnable() {
+                                     executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                            new kmeans(filePath);
+                                           pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
 				case "Hierarchial":
-                                     t=new Thread(new Runnable() {
+                                     executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                           new hierarchy(filePath); 
+                                          pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
 				case "Farthest First":
-                                     t=new Thread(new Runnable() {
+                                     executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                            new farthest(filePath);
+                                           pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
 				case "EM":	
-                                     t=new Thread(new Runnable() {
+                                     executor.execute(new Runnable() {
 
                                         @Override
                                         public void run() {
                                            new em(filePath);
+                                           pendingAlgorithms.countDown();
                                         }
                                     });
 					break;
                            
 			}
-                     t.start();
+		}
+		
+		try {
+			pendingAlgorithms.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
