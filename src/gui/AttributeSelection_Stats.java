@@ -128,7 +128,7 @@ public class AttributeSelection_Stats {
                data=null;
                eval=null;
                Runtime.getRuntime().gc();
-               
+               System.runFinalization ();
             }
        });
        

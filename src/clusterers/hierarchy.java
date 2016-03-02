@@ -41,6 +41,7 @@ public class hierarchy {
        eval=null;
        algo=null;
        Runtime.getRuntime().gc(); 
+       System.runFinalization ();
     }
     
 }

@@ -42,6 +42,7 @@ public class farthest {
        eval=null;
        algo=null;
        Runtime.getRuntime().gc();
+       System.runFinalization ();
        
     }
     

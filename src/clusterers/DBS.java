@@ -47,6 +47,7 @@ public class DBS {
                 eval=null;
                 DBS=null;
                 Runtime.getRuntime().gc();
+                System.runFinalization ();
 
    }
 

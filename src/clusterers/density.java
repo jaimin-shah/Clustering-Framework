@@ -41,6 +41,7 @@ public class density {
        eval=null;
        algo=null;
        Runtime.getRuntime().gc();
+       System.runFinalization ();
        
     }
     

@@ -9,6 +9,8 @@ package visualize;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Shape;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -155,6 +157,13 @@ public class graph {
         data=null;
         eval=null;
         Runtime.getRuntime().gc();
+        frame.addWindowListener(new WindowAdapter() {
+            
+             public void windowClosing(WindowEvent we) {
+               System.runFinalization ();
+            }
+});
+        
          
     }
 }

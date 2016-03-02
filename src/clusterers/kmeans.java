@@ -42,6 +42,7 @@ SimpleKMeans kMeans;
     eval=null;
     kMeans=null;
     Runtime.getRuntime().gc();
+    System.runFinalization ();
     // print out the cluster centroids
 //    Instances centroids = kMeans.getClusterCentroids(); 
 //    for (int i = 0; i < centroids.numInstances(); i++) { 

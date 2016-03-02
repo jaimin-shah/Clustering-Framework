@@ -45,7 +45,7 @@ public class cobweb {
         eval=null;
         algo=null;
         Runtime.getRuntime().gc();
-       
+        System.runFinalization ();
     }
     
 }

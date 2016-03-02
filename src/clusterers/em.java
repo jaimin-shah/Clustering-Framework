@@ -44,6 +44,7 @@ public class em  {
        eval=null;
        algo=null;
        Runtime.getRuntime().gc();
+       System.runFinalization ();
        
        
     }
