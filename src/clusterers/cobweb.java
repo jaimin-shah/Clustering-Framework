@@ -41,7 +41,10 @@ public class cobweb {
        eval.evaluateClusterer(dataa);
         double[] p=eval.getClusterAssignments();
         new AttributeSelection_Stats(dataa, eval, "COBWEB", p);
-        
+        dataa=null;
+        eval=null;
+        algo=null;
+        Runtime.getRuntime().gc();
        
     }
     

@@ -152,6 +152,9 @@ public class graph {
          {
              frame.add(chartPanel);
          }
+        data=null;
+        eval=null;
+        Runtime.getRuntime().gc();
          
     }
 }

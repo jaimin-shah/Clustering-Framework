@@ -40,7 +40,10 @@ public class em  {
        eval.evaluateClusterer(dataa);
        double[] p=eval.getClusterAssignments();
        new AttributeSelection_Stats(dataa, eval, "EM", p);
-       
+       dataa=null;
+       eval=null;
+       algo=null;
+       Runtime.getRuntime().gc();
        
        
     }

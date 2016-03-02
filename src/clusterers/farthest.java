@@ -38,7 +38,10 @@ public class farthest {
        eval.evaluateClusterer(dataa);
        double[] p=eval.getClusterAssignments();
        new AttributeSelection_Stats(dataa, eval, "Farthest First", p);  
-       
+       dataa=null;
+       eval=null;
+       algo=null;
+       Runtime.getRuntime().gc();
        
     }
     

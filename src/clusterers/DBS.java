@@ -43,6 +43,10 @@ public class DBS {
 		eval.evaluateClusterer(dataa);
 		double[] p=eval.getClusterAssignments();
 		new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
+                dataa=null;
+                eval=null;
+                DBS=null;
+                Runtime.getRuntime().gc();
 
    }
 
