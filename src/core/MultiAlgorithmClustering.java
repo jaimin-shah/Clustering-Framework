@@ -68,6 +68,18 @@ public class MultiAlgorithmClustering {
 		
 		while(it.hasNext()) {
 			
+			/*
+			
+			Use the ClusteringAlgorithmFactory here
+			
+			ClusteringAlgorithm algo = ClusteringAlgorithmFactory.getAlgorithmInstance(it.next());
+			algo.commit(filepath)
+			
+			
+			so using this you will remove all the switch case.
+			
+			*/
+			
 			//delegate the algorithms
 			switch(it.next()) {
 				case "DBSCAN":
