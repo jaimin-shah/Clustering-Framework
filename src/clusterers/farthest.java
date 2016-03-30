@@ -15,8 +15,10 @@ import weka.core.converters.ConverterUtils;
 public class farthest {
 
     private String filePath;
-    
-    public farthest(String f) {
+    int seed,no_of_clusters;
+    public farthest(String f,int seed,int mo_of_clusters) {
+        this.no_of_clusters=no_of_clusters;
+        this.seed=seed;
     	filePath = f;
     	try {
 			compute();
@@ -31,7 +33,8 @@ public class farthest {
       
         FarthestFirst algo=new FarthestFirst();
       
-       
+       algo.setNumClusters(no_of_clusters);
+       algo.setSeed(seed);
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

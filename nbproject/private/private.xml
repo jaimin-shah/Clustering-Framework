@@ -2,6 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/gui/GuiMaster.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/kmeans.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/ClusteringAlgorithmFactory.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/DBS.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/cobweb.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/core/MultiAlgorithmClustering.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/ClusteringAlgorithm.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/density.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/visualize/graph.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/gui/AttributeSelection_Stats.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/hierarchy.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/clusterers/em.java</file>
+            <file>file:/C:/Users/hp/Documents/NetBeansProjects/Clustering%20Framework/src/gui/MainDisplayPanel.java</file>
+        </group>
     </open-files>
 </project-private>
