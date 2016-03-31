@@ -30,6 +30,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 public class MainDisplayPanel extends JPanel implements ActionListener, ItemListener {
@@ -65,7 +66,19 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//Check boxes
 	//check boxes of algorithms to be selected
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
+        
+        //kmeans
+        JTextField k_iter,k_seed,k_no_clus;
 	
+        //DBS
+        JTextField d_eplison,d_minpoint;
+        
+        //em
+        JTextField e_minstdev,e_seed,e_no_clus,e_maxiter;
+        
+        //cobweb
+        JTextField c_acutiy,c_seed,c_cutoff;
+        
 	//file chooser
 	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
 	
@@ -102,6 +115,26 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		chkFarthestFirst = new JCheckBox("Farthest First");
 		chkEm = new JCheckBox("EM");
 		
+                //kmeans
+                k_iter=new JTextField(5);
+                k_seed=new JTextField(5);
+                k_no_clus=new JTextField(5);
+                
+                //DBS
+                d_eplison=new JTextField(5);
+                d_minpoint=new JTextField(5);
+                
+                //cobweb
+                c_acutiy=new JTextField(5);
+                c_cutoff=new JTextField(5);
+                c_seed=new JTextField(5);
+                
+                //em
+                e_minstdev=new JTextField(5);  
+                e_maxiter=new JTextField(5);  
+                e_no_clus=new JTextField(5);  
+                e_seed=new JTextField(5);  
+                
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
 		selectFiles.addChoosableFileFilter(new ClusteringFileSelectionFilter());
@@ -143,13 +176,30 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//algo check boxes
 		//chkCobWeb.setLocation(52, 87);
 		componentsPane.add(chkCobweb);
+                componentsPane.add(new JLabel("ACUTIY"));
+                componentsPane.add(c_acutiy);
+                componentsPane.add(new JLabel("CUTOFF"));
+                componentsPane.add(c_cutoff);
+                componentsPane.add(new JLabel("SEED"));
+                componentsPane.add(c_seed);
+                
 		
 		//chkDbscan.setLocation(52, 147);
 		componentsPane.add(chkDbscan);
-		
+                componentsPane.add(new JLabel("EPLISON"));
+                componentsPane.add(d_eplison);
+                componentsPane.add(new JLabel("MIN_POINTS"));
+                componentsPane.add(d_minpoint);
+                
 		//chkKmeans.setLocation(221, 87);
 		componentsPane.add(chkKmeans);
-		
+		componentsPane.add(new JLabel("MAX IERATIONS"));
+                componentsPane.add(k_iter);
+                componentsPane.add(new JLabel("NO OF CLUSTERS"));
+                componentsPane.add(k_no_clus);
+                componentsPane.add(new JLabel("SEED"));
+                componentsPane.add(k_seed);
+                
 		//chkXmeans.setLocation(221, 147);
 		componentsPane.add(chkHierarchy);
 		
@@ -158,7 +208,15 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		
 		//chkEm.setLocation(382, 147);
 		componentsPane.add(chkEm);
-		
+                componentsPane.add(new JLabel("MAX IERATIONS"));
+		componentsPane.add(e_maxiter);
+                componentsPane.add(new JLabel("MIN STD. DEVIATION"));
+                componentsPane.add(e_minstdev);
+                 componentsPane.add(new JLabel("NO OF CLUSTERS"));
+                componentsPane.add(e_no_clus);
+                componentsPane.add(new JLabel("SEED"));
+                componentsPane.add(e_seed);
+                
 		//button and label
 		//lblFilePath.setLocation(161, 229);
 		componentsPane.add(new JLabel("File:- "));
