@@ -46,7 +46,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	
 	//Panels
 	//component holding panel null layout
-	JPanel componentsPane = new JPanel(new FlowLayout());
+	JPanel componentsPane = new JPanel(new GridLayout(9, 9,10,10));
 	
 	//buttons
 	//button switch to one data many algorithm analysis mode
@@ -66,6 +66,12 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//Check boxes
 	//check boxes of algorithms to be selected
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
+        
+        //hierarchy
+        JTextField h_no_clus;
+        
+        //farthest
+        JTextField f_seed,f_no_clus;
         
         //kmeans
         JTextField k_iter,k_seed,k_no_clus;
@@ -116,24 +122,31 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		chkEm = new JCheckBox("EM");
 		
                 //kmeans
-                k_iter=new JTextField(5);
-                k_seed=new JTextField(5);
-                k_no_clus=new JTextField(5);
+                k_iter=new JTextField("500",7);
+                k_seed=new JTextField("10",7);
+                k_no_clus=new JTextField("2",7);
                 
                 //DBS
-                d_eplison=new JTextField(5);
-                d_minpoint=new JTextField(5);
+                d_eplison=new JTextField("0.9",7);
+                d_minpoint=new JTextField("6",7);
                 
                 //cobweb
-                c_acutiy=new JTextField(5);
-                c_cutoff=new JTextField(5);
-                c_seed=new JTextField(5);
+                c_acutiy=new JTextField("1.0",7);
+                c_cutoff=new JTextField("0.0028209479177387815",7);
+                c_seed=new JTextField("42",7);
                 
                 //em
-                e_minstdev=new JTextField(5);  
-                e_maxiter=new JTextField(5);  
-                e_no_clus=new JTextField(5);  
-                e_seed=new JTextField(5);  
+                e_minstdev=new JTextField("1.0E-6",7);  
+                e_maxiter=new JTextField("100",7);  
+                e_no_clus=new JTextField("-1",7);  
+                e_seed=new JTextField("100",7);  
+                
+                //farthest
+                f_no_clus=new JTextField("2",7);  
+                f_seed=new JTextField("1",7);
+                
+                //hierarchy
+                h_no_clus=new JTextField("2",7);
                 
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
@@ -172,7 +185,8 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//add to components panel
 		
 		componentsPane.add(new JLabel("Select algorithm/s :- "));
-		
+		movetonextrow(8);
+                
 		//algo check boxes
 		//chkCobWeb.setLocation(52, 87);
 		componentsPane.add(chkCobweb);
@@ -182,7 +196,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
                 componentsPane.add(c_cutoff);
                 componentsPane.add(new JLabel("SEED"));
                 componentsPane.add(c_seed);
-                
+                movetonextrow(2);
 		
 		//chkDbscan.setLocation(52, 147);
 		componentsPane.add(chkDbscan);
@@ -190,6 +204,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
                 componentsPane.add(d_eplison);
                 componentsPane.add(new JLabel("MIN_POINTS"));
                 componentsPane.add(d_minpoint);
+                movetonextrow(4);
                 
 		//chkKmeans.setLocation(221, 87);
 		componentsPane.add(chkKmeans);
@@ -199,20 +214,29 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
                 componentsPane.add(k_no_clus);
                 componentsPane.add(new JLabel("SEED"));
                 componentsPane.add(k_seed);
+                movetonextrow(2);
                 
 		//chkXmeans.setLocation(221, 147);
 		componentsPane.add(chkHierarchy);
-		
+		componentsPane.add(new JLabel("NO OF CLUSTERS"));
+                componentsPane.add(h_no_clus);
+                movetonextrow(6);
+                
 		//chkFarthestFirst.setLocation(382, 87);
 		componentsPane.add(chkFarthestFirst);
-		
+		componentsPane.add(new JLabel("SEED"));
+                componentsPane.add(f_seed);
+                componentsPane.add(new JLabel("NO OF CLUSTERS"));
+                componentsPane.add(f_no_clus);
+                movetonextrow(4);
+                
 		//chkEm.setLocation(382, 147);
 		componentsPane.add(chkEm);
                 componentsPane.add(new JLabel("MAX IERATIONS"));
 		componentsPane.add(e_maxiter);
                 componentsPane.add(new JLabel("MIN STD. DEVIATION"));
                 componentsPane.add(e_minstdev);
-                 componentsPane.add(new JLabel("NO OF CLUSTERS"));
+                componentsPane.add(new JLabel("NO OF CLUSTERS"));
                 componentsPane.add(e_no_clus);
                 componentsPane.add(new JLabel("SEED"));
                 componentsPane.add(e_seed);
@@ -221,7 +245,8 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//lblFilePath.setLocation(161, 229);
 		componentsPane.add(new JLabel("File:- "));
 		componentsPane.add(lblFilePath);
-		
+		movetonextrow(7);
+                
 		//btnChooseFile.setLocation(52, 225);
 		componentsPane.add(btnChooseFile);
 		componentsPane.add(btnClearSelection);
@@ -312,5 +337,13 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			
 		}		
 	}
+        
+        void movetonextrow(int n)
+        {
+            for(int i=0;i<n;i++)
+            {
+                componentsPane.add(new JLabel(""));
+            }
+        }
 
 }
