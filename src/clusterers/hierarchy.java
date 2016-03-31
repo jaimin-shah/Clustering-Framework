@@ -5,6 +5,8 @@
  */
 package clusterers;
 
+import java.util.HashMap;
+
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.HierarchicalClusterer;
@@ -14,25 +16,25 @@ import weka.core.converters.ConverterUtils;
 
 public class hierarchy {
 
-	private String filePath;
-        int no_of_clusters;
-    public hierarchy(String s,int no_of_clusters) {
-        this.no_of_clusters=no_of_clusters;
-    	filePath = s;
-    	try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	//int no_of_clusters
+    public hierarchy() {}
+    
+    public static HashMap<String, Double> getDefaults() {
+    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	
+    	hm.put("no_of_clusters", 5.0);
+    	
+    	return hm;
     }
-    private void compute() throws Exception {
+    
+    public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
         Instances dataa = ConverterUtils.DataSource.read(filePath); 
       
         HierarchicalClusterer algo = new HierarchicalClusterer();
       
-       algo.setNumClusters(no_of_clusters);
+       algo.setNumClusters(hm.get("no_of_clusters").intValue());
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

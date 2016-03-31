@@ -2,6 +2,8 @@ package core;
 
 import java.net.URI;
 import clusterers.*;
+
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -75,7 +77,14 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                           new DBS(filePath);
+                                           DBS dbs = new DBS();
+                                           
+                                           try {
+											dbs.compute(filePath, dbs.getDefaults());
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
                                            pendingAlgorithms.countDown();
                                         }
                                     });
@@ -85,7 +94,14 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                          new cobweb(filePath); 
+                                          cobweb cb = new cobweb(); 
+                                          
+                                          try {
+											cb.compute(filePath, cb.getDefaults());
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
                                           pendingAlgorithms.countDown();
                                         }
                                     });
@@ -95,7 +111,15 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                           new kmeans(filePath);
+                                           kmeans kms = new kmeans();
+                                           
+                                           try {
+											kms.compute(filePath, kms.getDefaults());
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+                                           
                                            pendingAlgorithms.countDown();
                                         }
                                     });
@@ -105,7 +129,15 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                          new hierarchy(filePath); 
+                                          hierarchy hry = new hierarchy(); 
+                                          
+                                          try {
+											hry.compute(filePath, hry.getDefaults());
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+                                          
                                           pendingAlgorithms.countDown();
                                         }
                                     });
@@ -115,7 +147,15 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                           new farthest(filePath);
+                                           farthest ft = new farthest();
+                                           
+                                           try {
+											ft.compute(filePath, ft.getDefaults());
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+                                           
                                            pendingAlgorithms.countDown();
                                         }
                                     });
@@ -125,7 +165,16 @@ public class MultiAlgorithmClustering {
 
                                         @Override
                                         public void run() {
-                                           new em(filePath);
+                                           em emc = new em();
+                                           
+                                           try {
+											emc.compute(filePath, emc.getDefaults());											
+											
+										} catch (Exception e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+                                           
                                            pendingAlgorithms.countDown();
                                         }
                                     });

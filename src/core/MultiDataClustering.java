@@ -50,7 +50,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new kmeans(s);
+							kmeans kms = new kmeans();
+							try {
+								kms.compute(s, kms.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});
@@ -67,7 +73,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new hierarchy(s);
+							hierarchy hry = new hierarchy();
+							try {
+								hry.compute(s, hry.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});
@@ -82,7 +94,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new em(s);
+							em ems = new em();
+							try {
+								ems.compute(s, ems.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});
@@ -97,7 +115,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new cobweb(s);
+							cobweb cb = new cobweb();
+							try {
+								cb.compute(s, cb.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});
@@ -112,7 +136,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new DBS(s);
+							DBS db = new DBS();
+							try {
+								db.compute(s, db.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});
@@ -127,7 +157,13 @@ public class MultiDataClustering {
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							new farthest(s);
+							farthest ft = new farthest();
+							try {
+								ft.compute(s, ft.getDefaults());
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							pendingFiles.countDown();
 						}
 					});

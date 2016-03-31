@@ -5,6 +5,8 @@
  */
 package clusterers;
 
+import java.util.HashMap;
+
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.MakeDensityBasedClusterer;
@@ -14,25 +16,24 @@ import weka.core.converters.ConverterUtils;
 
 public class density {
 
-    private String filePath;
-    double minstdev;
-    public density(String s,double minstdev) {
-        this.minstdev=minstdev;
-    	filePath = s;
-    	try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    //double minstdev
+    public density() {}
+    
+    public static HashMap<String, Double> getDefaults() {
+    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	
+    	hm.put("minstdev", 10.0);
+    	
+    	return hm;
     }
-   private void compute() throws Exception {
+    
+   private void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
         Instances dataa = ConverterUtils.DataSource.read(filePath); 
       
         MakeDensityBasedClusterer algo=new MakeDensityBasedClusterer();
       
-       algo.setMinStdDev(minstdev);
+       algo.setMinStdDev(hm.get("minstdev"));
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

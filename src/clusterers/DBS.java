@@ -2,6 +2,8 @@
 
 package clusterers;
 
+import java.util.HashMap;
+
 import gui.AttributeSelection_Stats;
 import visualize.*;
 
@@ -14,44 +16,43 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class DBS {
-        double eplison;
-        int minpoints;
-	private String filePath;
+
+	public DBS() {}
 	
-	public DBS(String f,double eplison,int minpoints) {
-                this.eplison=eplison;
-                this.minpoints=minpoints;
-		filePath = f;
-		try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	//double epsilon, int minpoints 
+	public static HashMap<String, Double> getDefaults() {
+		
+		HashMap<String, Double> hm = new HashMap<String, Double>();
+		hm.put("epsilon", 1.0);
+		hm.put("minpoints", 12.0);
+		
+		return hm;
 	}
-   private void compute() throws Exception {
+	
+	public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
 		Instances dataa = DataSource.read(filePath); 
 
 		DBSCAN DBS;
 		// create the model 
 		DBS  = new DBSCAN();
-
-                DBS.setEpsilon(eplison);
-                DBS.setMinPoints(minpoints);
+		
+		DBS.setEpsilon(hm.get("epsilon"));
+        DBS.setMinPoints(hm.get("minpoints").intValue());
 		ClusterEvaluation eval = new ClusterEvaluation();
 		DBS.buildClusterer(dataa); 
-                
+		        
 		// print out the cluster centroids
 		eval.setClusterer(DBS);
-
+		
 		eval.evaluateClusterer(dataa);
 		double[] p=eval.getClusterAssignments();
 		new AttributeSelection_Stats(dataa, eval, "DBS SCAN", p);
-                dataa=null;
-                eval=null;
-                DBS=null;
-                Runtime.getRuntime().gc();
-                System.runFinalization ();
+		
+		dataa=null;
+		eval=null;
+		DBS=null;
+		Runtime.getRuntime().gc();
+		System.runFinalization ();
 
    }
 

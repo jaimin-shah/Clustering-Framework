@@ -5,6 +5,8 @@
  */
 package clusterers;
 
+import java.util.HashMap;
+
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.FarthestFirst;
@@ -14,27 +16,30 @@ import weka.core.converters.ConverterUtils;
 
 public class farthest {
 
-    private String filePath;
-    int seed,no_of_clusters;
-    public farthest(String f,int seed,int mo_of_clusters) {
-        this.no_of_clusters=no_of_clusters;
-        this.seed=seed;
-    	filePath = f;
-    	try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	//int seed,int no_of_clusters
+    
+    public farthest() {}
+    
+    public static HashMap<String, Double> getDefaults() {
+    	
+    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	
+    	hm.put("seed", 10.0);
+    	hm.put("no_of_clusters", 3.0);
+    	
+    	return hm;
     }
-    private void compute() throws Exception {
+    
+    public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
         Instances dataa = ConverterUtils.DataSource.read(filePath); 
       
         FarthestFirst algo=new FarthestFirst();
       
-       algo.setNumClusters(no_of_clusters);
-       algo.setSeed(seed);
+       algo.setNumClusters(hm.get("no_of_clusters").intValue());
+       algo.setSeed(hm.get("seed").intValue());
+       
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);
