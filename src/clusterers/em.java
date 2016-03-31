@@ -16,9 +16,14 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class em  {
-
+    int maxiter,seed,no_of_clusters;
+    double minstddev;
     private String filePath;
-    public em(String f) {
+    public em(String f,int maxiter,int seed,int no_of_clusters,double minstddev) {
+        this.maxiter=maxiter;
+        this.seed=seed;
+        this.no_of_clusters=no_of_clusters;
+        this.minstddev=minstddev;
     	filePath = f;
     	try {
 			compute();
@@ -34,6 +39,10 @@ public class em  {
 
        EM algo=new EM();
        
+       algo.setMinStdDev(minstddev);
+       algo.setMaxIterations(maxiter);
+       algo.setSeed(seed);
+       algo.setNumClusters(no_of_clusters);
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);
