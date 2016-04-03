@@ -32,7 +32,7 @@ public class DBS {
 	}
 	
 	//set parameters for DbScan
-	public HashMap<String, Double> setParameters(double epsilon, double minpoints) {
+	public static HashMap<String, Double> setParameters(double epsilon, double minpoints) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("epsilon", epsilon);
     	hm.put("minpoints", minpoints);

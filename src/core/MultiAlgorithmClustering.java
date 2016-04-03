@@ -5,6 +5,8 @@ import clusterers.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,14 +20,14 @@ public class MultiAlgorithmClustering {
 	String filePath;
 	
 	//algorithms to be run on data
-	HashSet<String> selectedAlgorithms;
+	HashMap<String, HashMap<String, Double>> selectedAlgorithms;
 	
 	//for creating a pool of threads
 	ExecutorService executor;
 	
 	//constructor
 	public MultiAlgorithmClustering() {
-		selectedAlgorithms = new HashSet<String>();
+		selectedAlgorithms = new HashMap<String, HashMap<String, Double>>();
 		executor = Executors.newFixedThreadPool(7);
 		System.out.println("started 7 worker threads " + Runtime.getRuntime().availableProcessors());
 	}
@@ -37,8 +39,8 @@ public class MultiAlgorithmClustering {
 	}
 	
 	//add algos to list
-	public void addAlgorithms(String s) {
-		selectedAlgorithms.add(s);
+	public void addAlgorithms(String s, HashMap<String, Double> hm) {
+		selectedAlgorithms.put(s, hm);
 	}
 	
 	//remove algos from list
@@ -64,14 +66,15 @@ public class MultiAlgorithmClustering {
 	//run algorithms
 	public void runAlgorithms() {
 		
-		java.util.Iterator<String> it = selectedAlgorithms.iterator();
+		Set<Map.Entry<String, HashMap<String, Double>>> set = selectedAlgorithms.entrySet();
             
 		CountDownLatch pendingAlgorithms = new CountDownLatch(selectedAlgorithms.size());
-		
-		while(it.hasNext()) {
+		for(Map.Entry<String, HashMap<String, Double>> mapentry : set) {
 			
+			System.out.println(mapentry.getKey());
+			System.out.println(mapentry.getValue());
 			//delegate the algorithms
-			switch(it.next()) {
+			switch(mapentry.getKey()) {
 				case "DBSCAN":
                                     executor.execute(new Runnable() {
 
@@ -80,7 +83,8 @@ public class MultiAlgorithmClustering {
                                            DBS dbs = new DBS();
                                            
                                            try {
-											dbs.compute(filePath, DBS.getDefaults());
+                                        	   
+                                        	   dbs.compute(filePath, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -97,7 +101,7 @@ public class MultiAlgorithmClustering {
                                           cobweb cb = new cobweb(); 
                                           
                                           try {
-											cb.compute(filePath, cobweb.getDefaults());
+											cb.compute(filePath, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -114,7 +118,7 @@ public class MultiAlgorithmClustering {
                                            kmeans kms = new kmeans();
                                            
                                            try {
-											kms.compute(filePath, kmeans.getDefaults());
+											kms.compute(filePath, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -132,7 +136,7 @@ public class MultiAlgorithmClustering {
                                           hierarchy hry = new hierarchy(); 
                                           
                                           try {
-											hry.compute(filePath, hierarchy.getDefaults());
+											hry.compute(filePath, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -150,7 +154,7 @@ public class MultiAlgorithmClustering {
                                            farthest ft = new farthest();
                                            
                                            try {
-											ft.compute(filePath, farthest.getDefaults());
+											ft.compute(filePath, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -168,7 +172,7 @@ public class MultiAlgorithmClustering {
                                            em emc = new em();
                                            
                                            try {
-											emc.compute(filePath, em.getDefaults());											
+											emc.compute(filePath, mapentry.getValue());											
 											
 										} catch (Exception e) {
 											// TODO Auto-generated catch block

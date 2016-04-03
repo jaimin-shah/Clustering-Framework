@@ -30,7 +30,7 @@ public class hierarchy {
     }
     
     //set parameters for hierarchical clusterer
-    public HashMap<String, Double> setParameters(double clusters) {
+    public static HashMap<String, Double> setParameters(double clusters) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("no_of_clusters", clusters);
     	return hm;

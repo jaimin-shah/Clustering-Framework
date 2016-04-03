@@ -4,36 +4,25 @@
 package gui;
 
 import core.MultiAlgorithmClustering;
+import clusterers.*;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.io.File;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
 
 public class MainDisplayPanel extends JPanel implements ActionListener, ItemListener {
 	
@@ -133,7 +122,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//kmeans
         k_iter = new JTextField("500",7);
         k_seed = new JTextField("10",7);
-        k_no_clus = new JTextField("2",7);
+        k_no_clus = new JTextField("3",7);
         btnKms = new JButton("Set Kmeans");
         
         //DBS
@@ -383,15 +372,13 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//create instance of dispatcher, occurs only first time a selection is made
 		if(dispatchAlgorithms == null) {
 			dispatchAlgorithms = new MultiAlgorithmClustering();
-			dispatchAlgorithms.addAlgorithms(cb.getText());
-			
+						
 			addParametersPane(cb.getText());
 			componentsPane.revalidate();
 		}
 		else {
 			if(cb.isSelected()) {
-				dispatchAlgorithms.addAlgorithms(cb.getText());
-				
+								
 				addParametersPane(cb.getText());
 				componentsPane.repaint();
 				componentsPane.revalidate();
@@ -436,21 +423,27 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		switch(algo) {
 	    	case "DBSCAN":
 	    		componentsPane.add(pnlDbs);
+	    		dispatchAlgorithms.addAlgorithms(algo, DBS.getDefaults());
 	    		break;
 	    	case "Cobweb":
 	    		componentsPane.add(pnlCobweb);
+	    		dispatchAlgorithms.addAlgorithms(algo, cobweb.getDefaults());
 	    		break;
 	    	case "KMeans":
 	    		componentsPane.add(pnlKmeans);
+	    		dispatchAlgorithms.addAlgorithms(algo, kmeans.getDefaults());
 	    		break;
 	    	case "Hierarchial":
 	    		componentsPane.add(pnlHierarchy);
+	    		dispatchAlgorithms.addAlgorithms(algo, hierarchy.getDefaults());
 	    		break;
 	    	case "Farthest First":
 	    		componentsPane.add(pnlFarthestFirst);
+	    		dispatchAlgorithms.addAlgorithms(algo, farthest.getDefaults());
 	    		break;
 	    	case "EM":
 	    		componentsPane.add(pnlEm);
+	    		dispatchAlgorithms.addAlgorithms(algo, em.getDefaults());
 	    		break;
 		}
 	}
@@ -462,14 +455,14 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				String iter = k_iter.getText(), clust = k_no_clus.getText(), seed = k_seed.getText();
 				
 				if(iter.length() != 0 && clust.length() != 0 && seed.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("KMeans", kmeans.setParameters(Double.parseDouble(clust), Double.parseDouble(iter), Double.parseDouble(seed)));
 				}
 				
 				break;
 			case "Set DBSCAN":
 				String epsilon = d_eplison.getText(), minpoint = d_minpoint.getText();
 				if(epsilon.length() != 0 && minpoint.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("DBSCAN", DBS.setParameters(Double.parseDouble(epsilon), Double.parseDouble(minpoint)));
 				}
 				
 				break;
@@ -477,7 +470,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				String acuity = c_acutiy.getText(), cutoffVal = c_cutoff.getText(),
 				seedIng = c_seed.getText();
 				if(acuity.length() != 0 && cutoffVal.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("Cobweb", cobweb.setParameters(Double.parseDouble(seedIng), Double.parseDouble(acuity), Double.parseDouble(cutoffVal)));
 				}
 				
 				break;
@@ -486,7 +479,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				String seed1 = e_seed.getText(), clusts = e_no_clus.getText(), maxiter = e_maxiter.getText(), minstdDev = e_minstdev.getText(); 
 				
 				if(seed1.length() != 0 && clusts.length() != 0 && maxiter.length() != 0 && minstdDev.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("EM", em.setParameters(Double.parseDouble(maxiter), Double.parseDouble(seed1), Double.parseDouble(clusts), Double.parseDouble(minstdDev)));
 				}
 				break;
 				
@@ -494,14 +487,14 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				String clusters1 = f_no_clus.getText(), seed2 = f_seed.getText();
 				
 				if(clusters1.length() != 0 && seed2.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("Farthest First", farthest.setParameters(Double.parseDouble(seed2), Double.parseDouble(clusters1)));
 				}
 				break;
 				
 			case "Set HIERARCHY":
 				String clusters = f_no_clus.getText();
 				if(clusters.length() != 0) {
-					
+					dispatchAlgorithms.addAlgorithms("Hierarchial", hierarchy.setParameters(Double.parseDouble(clusters)));
 				}
 				
 				break;

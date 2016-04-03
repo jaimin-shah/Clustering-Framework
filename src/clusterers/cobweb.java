@@ -35,7 +35,7 @@ public class cobweb {
 	}
 	
 	//set default parameters for Cobweb
-	public HashMap<String, Double> setParameters(double seed, double acuity, double cutoff) {
+	public static HashMap<String, Double> setParameters(double seed, double acuity, double cutoff) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("seed", seed);
     	hm.put("acuity", acuity);

@@ -35,7 +35,7 @@ public class em  {
     }
     
     //set parametrs for expectation maximization
-    public HashMap<String, Double> setParameters(double iters, double seed, double clusters, double minstddev) {
+    public static HashMap<String, Double> setParameters(double iters, double seed, double clusters, double minstddev) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("maxiter", iters);
     	hm.put("seed", seed);

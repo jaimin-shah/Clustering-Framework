@@ -33,7 +33,7 @@ public class farthest {
     }
     
     //set parameters for farthest first
-    public HashMap<String, Double> setParameters(double seed, double clusters) {
+    public static HashMap<String, Double> setParameters(double seed, double clusters) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("seed", seed);
     	hm.put("no_of_clusters", clusters);

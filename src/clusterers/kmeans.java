@@ -30,7 +30,7 @@ public class kmeans {
 	}
 	
 	//explicitly set kmeans parameters
-	public HashMap<String, Double> setParameters(double clusters, double maxiter, double seed) {
+	public static HashMap<String, Double> setParameters(double clusters, double maxiter, double seed) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("seed", seed);
     	hm.put("no_of_clusters", clusters);

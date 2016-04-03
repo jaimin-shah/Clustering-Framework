@@ -29,7 +29,7 @@ public class density {
     }
     
     //set parameters for density clusterer
-    public HashMap<String, Double> setParameters(double minstddev) {
+    public static HashMap<String, Double> setParameters(double minstddev) {
     	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	hm.put("minstddev", minstddev);
     	return hm;
