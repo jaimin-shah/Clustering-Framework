@@ -18,15 +18,25 @@ public class kmeans {
 
 	public kmeans() {}
 	
+	//get default parameters for kmeans
 	public static HashMap<String, Double> getDefaults() {
 		
-		HashMap<String, Double> hm = new HashMap<String, Double>();
-		hm.put("maxiter", 10.0);
-		hm.put("no_of_clusters", 5.0);
-		hm.put("seed", 1.0);
+		HashMap<String, Double> hm = new HashMap<String, Double>(5);
+		hm.put("maxiter", 500.0);
+		hm.put("no_of_clusters", 3.0);
+		hm.put("seed", 10.0);
 		
 		return hm;
 	}
+	
+	//explicitly set kmeans parameters
+	public HashMap<String, Double> setParameters(double clusters, double maxiter, double seed) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("seed", seed);
+    	hm.put("no_of_clusters", clusters);
+    	hm.put("maxiter", maxiter);
+    	return hm;
+    }
 
 	public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
 		   

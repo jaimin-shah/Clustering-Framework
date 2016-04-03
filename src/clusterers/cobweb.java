@@ -21,16 +21,27 @@ public class cobweb {
 
 	
 	//int seed,double acuity,double cutoff
+	
+	//get default parameters for Cobweb
 	public static HashMap<String, Double> getDefaults(){
 		
 		HashMap<String, Double> hm = new HashMap<>();
-		hm.put("seed",5.5);
-		hm.put("acuity", 455.323);
-		hm.put("cutoff", 5.323);
+		hm.put("seed", 42.0);
+		hm.put("acuity", 1.0);
+		hm.put("cutoff", 0.0028209479177387815);
 		
 		return hm;
 		
 	}
+	
+	//set default parameters for Cobweb
+	public HashMap<String, Double> setParameters(double seed, double acuity, double cutoff) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("seed", seed);
+    	hm.put("acuity", acuity);
+    	hm.put("cutoff", cutoff);
+    	return hm;
+    }
 	
     public cobweb() {
 

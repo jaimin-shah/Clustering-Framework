@@ -20,11 +20,19 @@ public class hierarchy {
 	//int no_of_clusters
     public hierarchy() {}
     
+    //get default parameters for hierarchical clusterer
     public static HashMap<String, Double> getDefaults() {
-    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	
-    	hm.put("no_of_clusters", 5.0);
+    	hm.put("no_of_clusters", 2.0);
     	
+    	return hm;
+    }
+    
+    //set parameters for hierarchical clusterer
+    public HashMap<String, Double> setParameters(double clusters) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("no_of_clusters", clusters);
     	return hm;
     }
     

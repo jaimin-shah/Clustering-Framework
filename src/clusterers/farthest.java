@@ -21,13 +21,22 @@ public class farthest {
     
     public farthest() {}
     
+    //get default parameters for farthest first
     public static HashMap<String, Double> getDefaults() {
     	
-    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	
-    	hm.put("seed", 10.0);
+    	hm.put("seed", 1.0);
     	hm.put("no_of_clusters", 3.0);
     	
+    	return hm;
+    }
+    
+    //set parameters for farthest first
+    public HashMap<String, Double> setParameters(double seed, double clusters) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("seed", seed);
+    	hm.put("no_of_clusters", clusters);
     	return hm;
     }
     

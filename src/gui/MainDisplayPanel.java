@@ -326,6 +326,9 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		if(dispatchAlgorithms == null) {
 			dispatchAlgorithms = new MultiAlgorithmClustering();
 			dispatchAlgorithms.addAlgorithms(cb.getText());
+			
+			//request parameters
+			requestParameters(cb.getText());
 		}
 		else {
 			if(cb.isSelected()) {
@@ -338,7 +341,14 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		}		
 	}
         
-        void movetonextrow(int n)
+	private void requestParameters(String algo) {
+		// TODO Auto-generated method stub
+        	
+        	
+		
+	}
+
+		void movetonextrow(int n)
         {
             for(int i=0;i<n;i++)
             {

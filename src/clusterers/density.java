@@ -19,11 +19,19 @@ public class density {
     //double minstdev
     public density() {}
     
+    //get default parameters for density clusterer
     public static HashMap<String, Double> getDefaults() {
     	HashMap<String, Double> hm = new HashMap<String, Double>();
     	
     	hm.put("minstdev", 10.0);
     	
+    	return hm;
+    }
+    
+    //set parameters for density clusterer
+    public HashMap<String, Double> setParameters(double minstddev) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("minstddev", minstddev);
     	return hm;
     }
     

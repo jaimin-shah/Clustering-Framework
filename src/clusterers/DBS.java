@@ -20,14 +20,24 @@ public class DBS {
 	public DBS() {}
 	
 	//double epsilon, int minpoints 
+	
+	//get default parameters for DbScan
 	public static HashMap<String, Double> getDefaults() {
 		
-		HashMap<String, Double> hm = new HashMap<String, Double>();
-		hm.put("epsilon", 1.0);
-		hm.put("minpoints", 12.0);
+		HashMap<String, Double> hm = new HashMap<String, Double>(5);
+		hm.put("epsilon", 0.9);
+		hm.put("minpoints", 6.0);
 		
 		return hm;
 	}
+	
+	//set parameters for DbScan
+	public HashMap<String, Double> setParameters(double epsilon, double minpoints) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("epsilon", epsilon);
+    	hm.put("minpoints", minpoints);
+    	return hm;
+    }
 	
 	public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
 		Instances dataa = DataSource.read(filePath); 

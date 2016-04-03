@@ -80,7 +80,7 @@ public class MultiAlgorithmClustering {
                                            DBS dbs = new DBS();
                                            
                                            try {
-											dbs.compute(filePath, dbs.getDefaults());
+											dbs.compute(filePath, DBS.getDefaults());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -97,7 +97,7 @@ public class MultiAlgorithmClustering {
                                           cobweb cb = new cobweb(); 
                                           
                                           try {
-											cb.compute(filePath, cb.getDefaults());
+											cb.compute(filePath, cobweb.getDefaults());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -114,7 +114,7 @@ public class MultiAlgorithmClustering {
                                            kmeans kms = new kmeans();
                                            
                                            try {
-											kms.compute(filePath, kms.getDefaults());
+											kms.compute(filePath, kmeans.getDefaults());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -132,7 +132,7 @@ public class MultiAlgorithmClustering {
                                           hierarchy hry = new hierarchy(); 
                                           
                                           try {
-											hry.compute(filePath, hry.getDefaults());
+											hry.compute(filePath, hierarchy.getDefaults());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -150,7 +150,7 @@ public class MultiAlgorithmClustering {
                                            farthest ft = new farthest();
                                            
                                            try {
-											ft.compute(filePath, ft.getDefaults());
+											ft.compute(filePath, farthest.getDefaults());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -168,7 +168,7 @@ public class MultiAlgorithmClustering {
                                            em emc = new em();
                                            
                                            try {
-											emc.compute(filePath, emc.getDefaults());											
+											emc.compute(filePath, em.getDefaults());											
 											
 										} catch (Exception e) {
 											// TODO Auto-generated catch block

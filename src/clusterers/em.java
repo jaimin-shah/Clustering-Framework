@@ -22,14 +22,25 @@ public class em  {
 	//int maxiter,int seed,int no_of_clusters,double minstddev    
     public em() {}
     
+    //get default parameters for expectation maximization
     public static HashMap<String, Double> getDefaults() {
-    	HashMap<String, Double> hm = new HashMap<String, Double>();
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
     	
-    	hm.put("maxiter", 10.0);
-    	hm.put("seed", 10.0);
-    	hm.put("no_of_clusters", 5.0);
-    	hm.put("minstddev", 1.0);
+    	hm.put("maxiter", 100.0);
+    	hm.put("seed", 100.0);
+    	hm.put("no_of_clusters", -1.0);
+    	hm.put("minstddev", 0.000001);
     	
+    	return hm;
+    }
+    
+    //set parametrs for expectation maximization
+    public HashMap<String, Double> setParameters(double iters, double seed, double clusters, double minstddev) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("maxiter", iters);
+    	hm.put("seed", seed);
+    	hm.put("no_of_clusters", clusters);
+    	hm.put("minstddev", minstddev);
     	return hm;
     }
     
