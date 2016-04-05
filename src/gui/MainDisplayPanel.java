@@ -42,7 +42,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	JPanel componentsPane = new JPanel(new FlowLayout());
 	
         //map
-        HashMap rm;
+        HashMap rm,default_para;
 	//buttons
 	//button switch to one data many algorithm analysis mode
 	JButton btnswitchMode = new JButton("Switch to Many data one Algorithm");
@@ -238,14 +238,22 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		pnlEm.add(e_seed);
 		pnlEm.add(btnEm);
                 
-                //hashmap to remove panel
+                //hashmap to add/remove panel
                 rm=new HashMap();
                 rm.put("DBSCAN",pnlDbs );
                 rm.put("Cobweb", pnlCobweb);
                 rm.put("KMeans",pnlKmeans );
                 rm.put("Hierarchial",pnlHierarchy );
                 rm.put("Farthest First", pnlFarthestFirst);
-                 rm.put("EM", pnlEm);
+                rm.put("EM", pnlEm);
+                
+                default_para=new HashMap();
+                default_para.put("DBSCAN",DBS.getDefaults() );
+                default_para.put("Cobweb", cobweb.getDefaults());
+                default_para.put("KMeans",kmeans.getDefaults());
+                default_para.put("Hierarchial",hierarchy.getDefaults());
+                default_para.put("Farthest First", farthest.getDefaults());
+                default_para.put("EM", em.getDefaults());
 	}
 
 	//assign component's listeners
@@ -416,32 +424,10 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	private void addParametersPane(String algo) {
 		// TODO Auto-generated method stub
 		
-		switch(algo) {
-	    	case "DBSCAN":
-	    		componentsPane.add(pnlDbs);
-	    		dispatchAlgorithms.addAlgorithms(algo, DBS.getDefaults());
-	    		break;
-	    	case "Cobweb":
-	    		componentsPane.add(pnlCobweb);
-	    		dispatchAlgorithms.addAlgorithms(algo, cobweb.getDefaults());
-	    		break;
-	    	case "KMeans":
-	    		componentsPane.add(pnlKmeans);
-	    		dispatchAlgorithms.addAlgorithms(algo, kmeans.getDefaults());
-	    		break;
-	    	case "Hierarchial":
-	    		componentsPane.add(pnlHierarchy);
-	    		dispatchAlgorithms.addAlgorithms(algo, hierarchy.getDefaults());
-	    		break;
-	    	case "Farthest First":
-	    		componentsPane.add(pnlFarthestFirst);
-	    		dispatchAlgorithms.addAlgorithms(algo, farthest.getDefaults());
-	    		break;
-	    	case "EM":
-	    		componentsPane.add(pnlEm);
-	    		dispatchAlgorithms.addAlgorithms(algo, em.getDefaults());
-	    		break;
-		}
+		componentsPane.add((Component) rm.get(algo));
+	    	dispatchAlgorithms.addAlgorithms(algo, (HashMap<String, Double>) default_para.get(algo));
+	    		
+		
 	}
 	
 	private void handleParameterSetEvent(String button) {
