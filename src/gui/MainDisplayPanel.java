@@ -7,6 +7,7 @@ import core.MultiAlgorithmClustering;
 import clusterers.*;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -39,6 +41,8 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//component holding panel null layout
 	JPanel componentsPane = new JPanel(new FlowLayout());
 	
+        //map
+        HashMap rm;
 	//buttons
 	//button switch to one data many algorithm analysis mode
 	JButton btnswitchMode = new JButton("Switch to Many data one Algorithm");
@@ -118,6 +122,8 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		chkFarthestFirst = new JCheckBox("Farthest First");
 		chkEm = new JCheckBox("EM");
 		
+        
+                
 		//respective parameters
 		//kmeans
         k_iter = new JTextField("500",7);
@@ -231,6 +237,15 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		pnlEm.add(new JLabel("SEED"));
 		pnlEm.add(e_seed);
 		pnlEm.add(btnEm);
+                
+                //hashmap to remove panel
+                rm=new HashMap();
+                rm.put("DBSCAN",pnlDbs );
+                rm.put("Cobweb", pnlCobweb);
+                rm.put("KMeans",pnlKmeans );
+                rm.put("Hierarchial",pnlHierarchy );
+                rm.put("Farthest First", pnlFarthestFirst);
+                 rm.put("EM", pnlEm);
 	}
 
 	//assign component's listeners
@@ -395,26 +410,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 
 	private void removeParametersPane(String algo) {
 		// TODO Auto-generated method stub
-		switch(algo) {
-	    	case "DBSCAN":
-	    		componentsPane.remove(pnlDbs);
-	    		break;
-	    	case "Cobweb":
-	    		componentsPane.remove(pnlCobweb);
-	    		break;
-	    	case "KMeans":
-	    		componentsPane.remove(pnlKmeans);
-	    		break;
-	    	case "Hierarchial":
-	    		componentsPane.remove(pnlHierarchy);
-	    		break;
-	    	case "Farthest First":
-	    		componentsPane.remove(pnlFarthestFirst);
-	    		break;
-	    	case "EM":
-	    		componentsPane.remove(pnlEm);
-	    		break;
-		}
+		componentsPane.remove((Component) rm.get(algo));
 	}
 
 	private void addParametersPane(String algo) {
