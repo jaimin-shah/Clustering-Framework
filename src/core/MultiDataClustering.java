@@ -1,6 +1,7 @@
 package core;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +12,7 @@ import clusterers.*;
 public class MultiDataClustering {
 	
 	String selectedAlgorithm = null;
+	HashMap<String, Double> parameters = new HashMap<String, Double>();
 	File[] selectedFiles = null;
 	
 	ExecutorService executor;
@@ -20,8 +22,9 @@ public class MultiDataClustering {
 		System.out.println("5 worker threads started..");
 	}
 	
-	public void setAlgorithm(String s) {
+	public void setAlgorithm(String s, HashMap<String, Double> hm) {
 		selectedAlgorithm = s;
+		parameters = hm;
 	}
 	
 	public String getAlgorithm() {
@@ -52,7 +55,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							kmeans kms = new kmeans();
 							try {
-								kms.compute(s, kms.getDefaults());
+								kms.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -75,7 +78,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							hierarchy hry = new hierarchy();
 							try {
-								hry.compute(s, hry.getDefaults());
+								hry.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -96,7 +99,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							em ems = new em();
 							try {
-								ems.compute(s, ems.getDefaults());
+								ems.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -117,7 +120,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							cobweb cb = new cobweb();
 							try {
-								cb.compute(s, cb.getDefaults());
+								cb.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -138,7 +141,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							DBS db = new DBS();
 							try {
-								db.compute(s, db.getDefaults());
+								db.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -159,7 +162,7 @@ public class MultiDataClustering {
 							// TODO Auto-generated method stub
 							farthest ft = new farthest();
 							try {
-								ft.compute(s, ft.getDefaults());
+								ft.compute(s, parameters);
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

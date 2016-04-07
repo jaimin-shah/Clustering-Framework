@@ -41,8 +41,10 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//component holding panel null layout
 	JPanel componentsPane = new JPanel(new FlowLayout());
 	
-        //map
-        HashMap rm,default_para;
+    //map for panel and algorithm parameters
+    HashMap<String, JPanel> rm;
+    HashMap<String, HashMap<String, Double>> default_para;
+    
 	//buttons
 	//button switch to one data many algorithm analysis mode
 	JButton btnswitchMode = new JButton("Switch to Many data one Algorithm");
@@ -62,7 +64,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//check boxes of algorithms to be selected
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
-	//dialog
+	//panels to hold algo parameters
 	JPanel pnlCobweb, pnlDbs, pnlKmeans, pnlHierarchy, pnlFarthestFirst, pnlEm;
 	
 	//file chooser
@@ -238,22 +240,23 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		pnlEm.add(e_seed);
 		pnlEm.add(btnEm);
                 
-                //hashmap to add/remove panel
-                rm=new HashMap();
-                rm.put("DBSCAN",pnlDbs );
-                rm.put("Cobweb", pnlCobweb);
-                rm.put("KMeans",pnlKmeans );
-                rm.put("Hierarchial",pnlHierarchy );
-                rm.put("Farthest First", pnlFarthestFirst);
-                rm.put("EM", pnlEm);
-                
-                default_para=new HashMap();
-                default_para.put("DBSCAN",DBS.getDefaults() );
-                default_para.put("Cobweb", cobweb.getDefaults());
-                default_para.put("KMeans",kmeans.getDefaults());
-                default_para.put("Hierarchial",hierarchy.getDefaults());
-                default_para.put("Farthest First", farthest.getDefaults());
-                default_para.put("EM", em.getDefaults());
+        //hashmap to add/remove panel
+        rm = new HashMap<String, JPanel>();
+        rm.put("DBSCAN", pnlDbs );
+        rm.put("Cobweb", pnlCobweb);
+        rm.put("KMeans", pnlKmeans );
+        rm.put("Hierarchial", pnlHierarchy );
+        rm.put("Farthest First", pnlFarthestFirst);
+        rm.put("EM", pnlEm);
+        
+        //their mapped parameters
+        default_para = new HashMap<String, HashMap<String, Double>>();
+        default_para.put("DBSCAN",DBS.getDefaults() );
+        default_para.put("Cobweb", cobweb.getDefaults());
+        default_para.put("KMeans",kmeans.getDefaults());
+        default_para.put("Hierarchial",hierarchy.getDefaults());
+        default_para.put("Farthest First", farthest.getDefaults());
+        default_para.put("EM", em.getDefaults());
 	}
 
 	//assign component's listeners
@@ -382,7 +385,12 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		else {
 			//event of a button for parameter setting
 			System.out.println(((JButton)e.getSource()).getText());
-			handleParameterSetEvent(((JButton)e.getSource()).getText());
+			try {
+				handleParameterSetEvent(((JButton)e.getSource()).getText());
+			}
+			catch(NumberFormatException exxc) {
+				JOptionPane.showMessageDialog(fr, "Invalid Parameter. Expected number", "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
@@ -418,19 +426,17 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 
 	private void removeParametersPane(String algo) {
 		// TODO Auto-generated method stub
-		componentsPane.remove((Component) rm.get(algo));
+		componentsPane.remove(rm.get(algo));
 	}
 
 	private void addParametersPane(String algo) {
-		// TODO Auto-generated method stub
-		
-		componentsPane.add((Component) rm.get(algo));
-	    	dispatchAlgorithms.addAlgorithms(algo, (HashMap<String, Double>) default_para.get(algo));
-	    		
+		// TODO Auto-generated method stub		
+		componentsPane.add(rm.get(algo));
+	    dispatchAlgorithms.addAlgorithms(algo, default_para.get(algo));
 		
 	}
 	
-	private void handleParameterSetEvent(String button) {
+	private void handleParameterSetEvent(String button) throws NumberFormatException {
 		// TODO Auto-generated method stub
 		switch(button) {
 			case "Set Kmeans":
