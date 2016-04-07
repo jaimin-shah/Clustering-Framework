@@ -492,7 +492,8 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				break;
 				
 			case "Set HIERARCHY":
-				String clusters = f_no_clus.getText();
+				String clusters = h_no_clus.getText();
+				System.out.println("VIOLA");
 				if(clusters.length() != 0) {
 					dispatchAlgorithms.addAlgorithms("Hierarchial", hierarchy.setParameters(Double.parseDouble(clusters)));
 				}
