@@ -6,6 +6,7 @@ package gui;
 import core.MultiAlgorithmClustering;
 import clusterers.*;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -226,7 +227,16 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			if(dispatchAlgorithms != null) {
 				dispatchAlgorithms.stopWorkerThreads();
 			}
+			
 			fr.remove(this);
+			
+			ClustererParameterPanelFactory.btnCob.removeActionListener(this);
+			ClustererParameterPanelFactory.btnDbs.removeActionListener(this);
+			ClustererParameterPanelFactory.btnEm.removeActionListener(this);
+			ClustererParameterPanelFactory.btnFarthest.removeActionListener(this);
+			ClustererParameterPanelFactory.btnHie.removeActionListener(this);
+			ClustererParameterPanelFactory.btnKms.removeActionListener(this);
+			
 			fr.add(new AlternateAppMode(fr));
 			fr.revalidate();
 			
@@ -335,7 +345,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				
 			case "Set HIERARCHY":
 				String clusters = ClustererParameterPanelFactory.h_no_clus.getText();
-				System.out.println("VIOLA");
+				System.out.println("VIOLA maindisp");
 				if(clusters.length() != 0) {
 					dispatchAlgorithms.addAlgorithms("HIERARCHICAL", hierarchy.setParameters(Double.parseDouble(clusters)));
 				}

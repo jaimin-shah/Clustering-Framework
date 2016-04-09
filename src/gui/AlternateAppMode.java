@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -191,6 +192,14 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 			dispatchAlgorithms.stopWorkerThreads();
 			
 			fr.remove(this);
+			
+			ClustererParameterPanelFactory.btnCob.removeActionListener(this);
+			ClustererParameterPanelFactory.btnDbs.removeActionListener(this);
+			ClustererParameterPanelFactory.btnEm.removeActionListener(this);
+			ClustererParameterPanelFactory.btnFarthest.removeActionListener(this);
+			ClustererParameterPanelFactory.btnHie.removeActionListener(this);
+			ClustererParameterPanelFactory.btnKms.removeActionListener(this);
+			
 			fr.add(new MainDisplayPanel(fr));
 			fr.revalidate();
 		}
@@ -324,7 +333,7 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 				
 			case "Set HIERARCHY":
 				String clusters = ClustererParameterPanelFactory.h_no_clus.getText();
-				System.out.println("VIOLA");
+				System.out.println("VIOLA alternate");
 				if(clusters.length() != 0) {
 					dispatchAlgorithms.setAlgorithm("HIERARCHICAL", hierarchy.setParameters(Double.parseDouble(clusters)));
 				}
