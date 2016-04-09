@@ -40,10 +40,6 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//Panels
 	//component holding panel null layout
 	JPanel componentsPane = new JPanel(new FlowLayout());
-	
-    //map for panel and algorithm parameters
-    HashMap<String, JPanel> rm;
-    HashMap<String, HashMap<String, Double>> default_para;
     
 	//buttons
 	//button switch to one data many algorithm analysis mode
@@ -64,32 +60,9 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//check boxes of algorithms to be selected
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
-	//panels to hold algo parameters
-	JPanel pnlCobweb, pnlDbs, pnlKmeans, pnlHierarchy, pnlFarthestFirst, pnlEm;
 	
 	//file chooser
 	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
-	
-	//hierarchy
-    JTextField h_no_clus;
-    
-    //farthest
-    JTextField f_seed,f_no_clus;
-    
-    //kmeans
-    JTextField k_iter,k_seed,k_no_clus;
-
-    //DBS
-    JTextField d_eplison,d_minpoint;
-    
-    //em
-    JTextField e_minstdev,e_seed,e_no_clus,e_maxiter;
-    
-    //cobweb
-    JTextField c_acutiy,c_seed,c_cutoff;
-	
-    //and their button handlers
-    JButton btnCob, btnKms, btnDbs, btnHie, btnFarthest, btnEm;
     
 	//selected file-path on which clustering needs to be done
 	String selectedFilePath = null;
@@ -117,48 +90,13 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		setLayout(new BorderLayout());
 		
 		//initialize components
-		chkCobweb = new JCheckBox("Cobweb");
+		chkCobweb = new JCheckBox("COBWEB");
 		chkDbscan = new JCheckBox("DBSCAN");
-		chkKmeans = new JCheckBox("KMeans");
-		chkHierarchy = new JCheckBox("Hierarchial");
-		chkFarthestFirst = new JCheckBox("Farthest First");
-		chkEm = new JCheckBox("EM");
-		
-        
-                
-		//respective parameters
-		//kmeans
-        k_iter = new JTextField("500",7);
-        k_seed = new JTextField("10",7);
-        k_no_clus = new JTextField("3",7);
-        btnKms = new JButton("Set Kmeans");
-        
-        //DBS
-        d_eplison = new JTextField("0.9",7);
-        d_minpoint = new JTextField("6",7);
-        btnDbs = new JButton("Set DBSCAN");
-        
-        //cobweb
-        c_acutiy = new JTextField("1.0",7);
-        c_cutoff = new JTextField("0.0028209479177387815",7);
-        c_seed = new JTextField("42",7);
-        btnCob = new JButton("Set COBWEB");
-        
-        //em
-        e_minstdev = new JTextField("1.0E-6",7);  
-        e_maxiter = new JTextField("100",7);  
-        e_no_clus = new JTextField("-1",7);  
-        e_seed = new JTextField("100",7);  
-        btnEm = new JButton("Set EM");
-        
-        //farthest
-        f_no_clus = new JTextField("2",7);  
-        f_seed = new JTextField("1",7);
-        btnFarthest = new JButton("Set Farthest");
-        
-        //hierarchy
-        h_no_clus = new JTextField("2",7);
-		btnHie = new JButton("Set HIERARCHY");
+		chkKmeans = new JCheckBox("KMEANS");
+		chkHierarchy = new JCheckBox("HIERARCHICAL");
+		chkFarthestFirst = new JCheckBox("FARTHEST FIRST");
+		chkEm = new JCheckBox("EM");        
+             
         
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
@@ -172,91 +110,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		
 		//add this panel to gui frame
 		fr.add(this, BorderLayout.CENTER);
-		
-		//generate dialog components
-		instantiateDialog();
-	}
 
-	private void instantiateDialog() {
-		// TODO Auto-generated method stub
-		pnlCobweb = new JPanel();
-		pnlDbs = new JPanel();
-		pnlKmeans = new JPanel();
-		pnlHierarchy = new JPanel();
-		pnlFarthestFirst = new JPanel();
-		pnlEm = new JPanel();
-		
-		//cobweb
-		pnlCobweb.add(new JLabel("COBWEB --- "));
-		pnlCobweb.add(new JLabel("ACUTIY"));
-		pnlCobweb.add(c_acutiy);
-		pnlCobweb.add(new JLabel("CUTOFF"));
-		pnlCobweb.add(c_cutoff);
-		pnlCobweb.add(new JLabel("SEED"));
-		pnlCobweb.add(c_seed);
-		pnlCobweb.add(btnCob);
-		
-		//Dbscan
-		pnlDbs.add(new JLabel("DBSCAN --- "));
-		pnlDbs.add(new JLabel("EPLISON"));
-		pnlDbs.add(d_eplison);
-		pnlDbs.add(new JLabel("MIN_POINTS"));
-		pnlDbs.add(d_minpoint);
-		pnlDbs.add(btnDbs);
-		
-		//kmeans
-		pnlKmeans.add(new JLabel("KMEANS --- "));
-		pnlKmeans.add(new JLabel("MAX IERATIONS"));
-		pnlKmeans.add(k_iter);
-		pnlKmeans.add(new JLabel("NO OF CLUSTERS"));
-		pnlKmeans.add(k_no_clus);
-		pnlKmeans.add(new JLabel("SEED"));
-		pnlKmeans.add(k_seed);
-		pnlKmeans.add(btnKms);
-		
-		//hierarchy
-		pnlHierarchy.add(new JLabel("HIERARCHIAL --- "));
-		pnlHierarchy.add(new JLabel("NO OF CLUSTERS"));
-		pnlHierarchy.add(h_no_clus);
-		pnlHierarchy.add(btnHie);
-		
-		//farthest first
-		pnlFarthestFirst.add(new JLabel("Farthest First --- "));
-		pnlFarthestFirst.add(new JLabel("SEED"));
-		pnlFarthestFirst.add(f_seed);
-		pnlFarthestFirst.add(new JLabel("NO OF CLUSTERS"));
-		pnlFarthestFirst.add(f_no_clus);
-		pnlFarthestFirst.add(btnFarthest);
-		
-		//expectation maximization
-		pnlEm.add(new JLabel("EXPECTATION MAXIMIZATION --- "));
-		pnlEm.add(new JLabel("MAX IERATIONS"));
-		pnlEm.add(e_maxiter);
-		pnlEm.add(new JLabel("MIN STD. DEVIATION"));
-		pnlEm.add(e_minstdev);
-		pnlEm.add(new JLabel("NO OF CLUSTERS"));
-		pnlEm.add(e_no_clus);
-		pnlEm.add(new JLabel("SEED"));
-		pnlEm.add(e_seed);
-		pnlEm.add(btnEm);
-                
-        //hashmap to add/remove panel
-        rm = new HashMap<String, JPanel>();
-        rm.put("DBSCAN", pnlDbs );
-        rm.put("Cobweb", pnlCobweb);
-        rm.put("KMeans", pnlKmeans );
-        rm.put("Hierarchial", pnlHierarchy );
-        rm.put("Farthest First", pnlFarthestFirst);
-        rm.put("EM", pnlEm);
-        
-        //their mapped parameters
-        default_para = new HashMap<String, HashMap<String, Double>>();
-        default_para.put("DBSCAN",DBS.getDefaults() );
-        default_para.put("Cobweb", cobweb.getDefaults());
-        default_para.put("KMeans",kmeans.getDefaults());
-        default_para.put("Hierarchial",hierarchy.getDefaults());
-        default_para.put("Farthest First", farthest.getDefaults());
-        default_para.put("EM", em.getDefaults());
 	}
 
 	//assign component's listeners
@@ -267,12 +121,12 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		btnswitchMode.addActionListener(this);
 		btnClearSelection.addActionListener(this);
 		
-		btnCob.addActionListener(this);
-		btnDbs.addActionListener(this);
-		btnEm.addActionListener(this);
-		btnFarthest.addActionListener(this);
-		btnHie.addActionListener(this);
-		btnKms.addActionListener(this);
+		ClustererParameterPanelFactory.btnCob.addActionListener(this);
+		ClustererParameterPanelFactory.btnDbs.addActionListener(this);
+		ClustererParameterPanelFactory.btnEm.addActionListener(this);
+		ClustererParameterPanelFactory.btnFarthest.addActionListener(this);
+		ClustererParameterPanelFactory.btnHie.addActionListener(this);
+		ClustererParameterPanelFactory.btnKms.addActionListener(this);
 		
 		chkCobweb.addItemListener(this);
 		chkDbscan.addItemListener(this);
@@ -426,13 +280,13 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 
 	private void removeParametersPane(String algo) {
 		// TODO Auto-generated method stub
-		componentsPane.remove(rm.get(algo));
+		componentsPane.remove(ClustererParameterPanelFactory.getParameterPanel(algo));
 	}
 
 	private void addParametersPane(String algo) {
 		// TODO Auto-generated method stub		
-		componentsPane.add(rm.get(algo));
-	    dispatchAlgorithms.addAlgorithms(algo, default_para.get(algo));
+		componentsPane.add(ClustererParameterPanelFactory.getParameterPanel(algo));
+	    dispatchAlgorithms.addAlgorithms(algo, ClustererParameterPanelFactory.getDefaultParameters(algo));
 		
 	}
 	
@@ -440,31 +294,31 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		// TODO Auto-generated method stub
 		switch(button) {
 			case "Set Kmeans":
-				String iter = k_iter.getText(), clust = k_no_clus.getText(), seed = k_seed.getText();
+				String iter = ClustererParameterPanelFactory.k_iter.getText(), clust = ClustererParameterPanelFactory.k_no_clus.getText(), seed = ClustererParameterPanelFactory.k_seed.getText();
 				
 				if(iter.length() != 0 && clust.length() != 0 && seed.length() != 0) {
-					dispatchAlgorithms.addAlgorithms("KMeans", kmeans.setParameters(Double.parseDouble(clust), Double.parseDouble(iter), Double.parseDouble(seed)));
+					dispatchAlgorithms.addAlgorithms("KMEANS", kmeans.setParameters(Double.parseDouble(clust), Double.parseDouble(iter), Double.parseDouble(seed)));
 				}
 				
 				break;
 			case "Set DBSCAN":
-				String epsilon = d_eplison.getText(), minpoint = d_minpoint.getText();
+				String epsilon = ClustererParameterPanelFactory.d_eplison.getText(), minpoint = ClustererParameterPanelFactory.d_minpoint.getText();
 				if(epsilon.length() != 0 && minpoint.length() != 0) {
 					dispatchAlgorithms.addAlgorithms("DBSCAN", DBS.setParameters(Double.parseDouble(epsilon), Double.parseDouble(minpoint)));
 				}
 				
 				break;
 			case "Set COBWEB":
-				String acuity = c_acutiy.getText(), cutoffVal = c_cutoff.getText(),
-				seedIng = c_seed.getText();
+				String acuity = ClustererParameterPanelFactory.c_acutiy.getText(), cutoffVal = ClustererParameterPanelFactory.c_cutoff.getText(),
+				seedIng = ClustererParameterPanelFactory.c_seed.getText();
 				if(acuity.length() != 0 && cutoffVal.length() != 0) {
-					dispatchAlgorithms.addAlgorithms("Cobweb", cobweb.setParameters(Double.parseDouble(seedIng), Double.parseDouble(acuity), Double.parseDouble(cutoffVal)));
+					dispatchAlgorithms.addAlgorithms("COBWEB", cobweb.setParameters(Double.parseDouble(seedIng), Double.parseDouble(acuity), Double.parseDouble(cutoffVal)));
 				}
 				
 				break;
 				
 			case "Set EM":
-				String seed1 = e_seed.getText(), clusts = e_no_clus.getText(), maxiter = e_maxiter.getText(), minstdDev = e_minstdev.getText(); 
+				String seed1 = ClustererParameterPanelFactory.e_seed.getText(), clusts = ClustererParameterPanelFactory.e_no_clus.getText(), maxiter = ClustererParameterPanelFactory.e_maxiter.getText(), minstdDev = ClustererParameterPanelFactory.e_minstdev.getText(); 
 				
 				if(seed1.length() != 0 && clusts.length() != 0 && maxiter.length() != 0 && minstdDev.length() != 0) {
 					dispatchAlgorithms.addAlgorithms("EM", em.setParameters(Double.parseDouble(maxiter), Double.parseDouble(seed1), Double.parseDouble(clusts), Double.parseDouble(minstdDev)));
@@ -472,18 +326,18 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 				break;
 				
 			case "Set Farthest":
-				String clusters1 = f_no_clus.getText(), seed2 = f_seed.getText();
+				String clusters1 = ClustererParameterPanelFactory.f_no_clus.getText(), seed2 = ClustererParameterPanelFactory.f_seed.getText();
 				
 				if(clusters1.length() != 0 && seed2.length() != 0) {
-					dispatchAlgorithms.addAlgorithms("Farthest First", farthest.setParameters(Double.parseDouble(seed2), Double.parseDouble(clusters1)));
+					dispatchAlgorithms.addAlgorithms("FARTHEST FIRST", farthest.setParameters(Double.parseDouble(seed2), Double.parseDouble(clusters1)));
 				}
 				break;
 				
 			case "Set HIERARCHY":
-				String clusters = h_no_clus.getText();
+				String clusters = ClustererParameterPanelFactory.h_no_clus.getText();
 				System.out.println("VIOLA");
 				if(clusters.length() != 0) {
-					dispatchAlgorithms.addAlgorithms("Hierarchial", hierarchy.setParameters(Double.parseDouble(clusters)));
+					dispatchAlgorithms.addAlgorithms("HIERARCHICAL", hierarchy.setParameters(Double.parseDouble(clusters)));
 				}
 				
 				break;

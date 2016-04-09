@@ -93,7 +93,7 @@ public class MultiAlgorithmClustering {
                                         }
                                     });
 					break;
-				case "Cobweb":
+				case "COBWEB":
                                      executor.execute(new Runnable() {
 
                                         @Override
@@ -110,7 +110,7 @@ public class MultiAlgorithmClustering {
                                         }
                                     });
 					break;
-				case "KMeans":	
+				case "KMEANS":	
                                      executor.execute(new Runnable() {
 
                                         @Override
@@ -128,7 +128,7 @@ public class MultiAlgorithmClustering {
                                         }
                                     });
 					break;
-				case "Hierarchial":
+				case "HIERARCHICAL":
                                      executor.execute(new Runnable() {
 
                                         @Override
@@ -146,7 +146,7 @@ public class MultiAlgorithmClustering {
                                         }
                                     });
 					break;
-				case "Farthest First":
+				case "FARTHEST FIRST":
                                      executor.execute(new Runnable() {
 
                                         @Override

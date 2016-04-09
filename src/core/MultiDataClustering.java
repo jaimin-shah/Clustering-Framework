@@ -44,7 +44,7 @@ public class MultiDataClustering {
 		
 		//run selected algorithm on all files selected
 		switch(selectedAlgorithm) {
-			case "KMeans":
+			case "KMEANS":
 				
 				for(int i = 0; i < selectedFiles.length; i++) {
 					final String s = selectedFiles[i].getPath();
@@ -67,7 +67,7 @@ public class MultiDataClustering {
 				
 				
 				break;
-			case "Hierarchial" :
+			case "HIERARCHICAL" :
 				
 				for(int i = 0; i < selectedFiles.length; i++) {
 					final String s = selectedFiles[i].getPath();
@@ -89,7 +89,7 @@ public class MultiDataClustering {
 				}
 				
 				break;
-			case "Em":
+			case "EM":
 				for(int i = 0; i < selectedFiles.length; i++) {
 					final String s = selectedFiles[i].getPath();
 					executor.execute(new Runnable() {
@@ -110,7 +110,7 @@ public class MultiDataClustering {
 				}
 				
 				break;
-			case "CobWeb":
+			case "COBWEB":
 				for(int i = 0; i < selectedFiles.length; i++) {
 					final String s = selectedFiles[i].getPath();
 					executor.execute(new Runnable() {
@@ -152,7 +152,7 @@ public class MultiDataClustering {
 				}
 				
 				break;
-			case "Farthest First":
+			case "FARTHEST FIRST":
 				for(int i = 0; i < selectedFiles.length; i++) {
 					final String s = selectedFiles[i].getPath();
 					executor.execute(new Runnable() {
