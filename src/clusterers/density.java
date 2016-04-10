@@ -7,6 +7,7 @@ package clusterers;
 
 import java.util.HashMap;
 
+import core.DataInstancesStore;
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.MakeDensityBasedClusterer;
@@ -39,7 +40,13 @@ public class density {
   //run algo by providing file path
     public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
-		Instances dataa = DataSource.read(filePath); 
+    	Instances dataa = null;
+		if(DataInstancesStore.hasDataInstance(filePath)) {
+			dataa = DataInstancesStore.getDataInstanceOf(filePath);
+		}
+		else {
+			dataa = DataInstancesStore.computeDataInstance(filePath);
+		}
 		compute(dataa, hm);
     }
     
