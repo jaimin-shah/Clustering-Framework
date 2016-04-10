@@ -15,9 +15,7 @@ import weka.core.converters.ConverterUtils;
 public class density {
 
     private String filePath;
-    double minstdev;
-    public density(String s,double minstdev) {
-        this.minstdev=minstdev;
+    public density(String s) {
     	filePath = s;
     	try {
 			compute();
@@ -32,7 +30,7 @@ public class density {
       
         MakeDensityBasedClusterer algo=new MakeDensityBasedClusterer();
       
-       algo.setMinStdDev(minstdev);
+       
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

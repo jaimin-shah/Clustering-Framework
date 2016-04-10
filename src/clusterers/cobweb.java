@@ -18,12 +18,8 @@ import weka.core.converters.ConverterUtils.DataSource;
 public class cobweb {
 
     private String filePath;
-    double acuity,cutoff;
-    int seed;
-    public cobweb(String f,int seed,double acuity,double cutoff) {
-        this.acuity=acuity;
-        this.seed=seed;
-        this.cutoff=cutoff;
+    
+    public cobweb(String f) {
     	filePath = f;
     	try {
 			compute();
@@ -38,9 +34,7 @@ public class cobweb {
       
         Cobweb algo=new Cobweb();
        
-       algo.setAcuity(acuity);
-       algo.setCutoff(cutoff);
-       algo.setSeed(seed);
+       
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

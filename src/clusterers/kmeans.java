@@ -13,13 +13,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 public class kmeans {
 	
 	private static String filePath;
-        int maxinter;
-        int no_clusters;
-        int seed;
-	public kmeans(String f,int maxinter,int no_clusters,int seed) {
-                this.maxinter=maxinter;
-                this.no_clusters=no_clusters;
-                this.seed=seed;
+	public kmeans(String f) {
 		filePath = f;
 		try {
 			compute();
@@ -36,9 +30,7 @@ Instances dataa = DataSource.read(filePath);
 SimpleKMeans kMeans;
     // create the model 
     kMeans  = new SimpleKMeans();
-    kMeans.setMaxIterations(maxinter);
-    kMeans.setSeed(seed);
-    kMeans.setNumClusters(no_clusters);
+    kMeans.setNumClusters(3);
     kMeans.buildClusterer(dataa); 
     ClusterEvaluation eval=new ClusterEvaluation();
     eval.setClusterer(kMeans);

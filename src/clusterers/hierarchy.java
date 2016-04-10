@@ -15,9 +15,7 @@ import weka.core.converters.ConverterUtils;
 public class hierarchy {
 
 	private String filePath;
-        int no_of_clusters;
-    public hierarchy(String s,int no_of_clusters) {
-        this.no_of_clusters=no_of_clusters;
+    public hierarchy(String s) {
     	filePath = s;
     	try {
 			compute();
@@ -32,7 +30,7 @@ public class hierarchy {
       
         HierarchicalClusterer algo = new HierarchicalClusterer();
       
-       algo.setNumClusters(no_of_clusters);
+       
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

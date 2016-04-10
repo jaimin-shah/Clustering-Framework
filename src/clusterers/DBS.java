@@ -14,13 +14,10 @@ import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class DBS {
-        double eplison;
-        int minpoints;
+
 	private String filePath;
 	
-	public DBS(String f,double eplison,int minpoints) {
-                this.eplison=eplison;
-                this.minpoints=minpoints;
+	public DBS(String f) {
 		filePath = f;
 		try {
 			compute();
@@ -36,11 +33,10 @@ public class DBS {
 		// create the model 
 		DBS  = new DBSCAN();
 
-                DBS.setEpsilon(eplison);
-                DBS.setMinPoints(minpoints);
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		DBS.buildClusterer(dataa); 
-                
+
 		// print out the cluster centroids
 		eval.setClusterer(DBS);
 
