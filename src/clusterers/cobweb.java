@@ -15,7 +15,7 @@ import weka.core.converters.ConverterUtils.DataSource;
 /*
  * usage: pass path of file during creating object instance
  */
-public class cobweb implements ClusteringAlgorithm {
+public class cobweb {
 
     private String filePath;
     double acuity,cutoff;
@@ -32,7 +32,7 @@ public class cobweb implements ClusteringAlgorithm {
 			e.printStackTrace();
 		}
     }
-    public void compute() throws Exception {
+    private void compute() throws Exception {
         // TODO code application logic here
         Instances dataa = DataSource.read(filePath); 
       
