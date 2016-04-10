@@ -5,32 +5,59 @@
  */
 package clusterers;
 
+import java.util.HashMap;
+
+import core.DataInstancesStore;
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.HierarchicalClusterer;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
+import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class hierarchy {
+	
+	//int no_of_clusters
+    public hierarchy() {}
+    
+    //get default parameters for hierarchical clusterer
+    public static HashMap<String, Double> getDefaults() {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	
+    	hm.put("no_of_clusters", 2.0);
+    	
+    	return hm;
 
-	private String filePath;
-    public hierarchy(String s) {
-    	filePath = s;
-    	try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
-    private void compute() throws Exception {
+    
+    //set parameters for hierarchical clusterer
+    public static HashMap<String, Double> setParameters(double clusters) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("no_of_clusters", clusters);
+    	return hm;
+    }
+    
+  //run algo by providing file path
+    public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
-        Instances dataa = ConverterUtils.DataSource.read(filePath); 
+    	Instances dataa = null;
+		if(DataInstancesStore.hasDataInstance(filePath)) {
+			dataa = DataInstancesStore.getDataInstanceOf(filePath);
+		}
+		else {
+			dataa = DataInstancesStore.computeDataInstance(filePath);
+		}
+		compute(dataa, hm);
+    }
+    
+    //run algo by providing data instances
+    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    	
+       HierarchicalClusterer algo = new HierarchicalClusterer();
       
-        HierarchicalClusterer algo = new HierarchicalClusterer();
-      
-       
+       algo.setNumClusters(hm.get("no_of_clusters").intValue());
+
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();
        eval.setClusterer(algo);

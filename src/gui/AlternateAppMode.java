@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -9,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -21,11 +23,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import clusterers.DBS;
+import clusterers.cobweb;
+import clusterers.em;
+import clusterers.farthest;
+import clusterers.hierarchy;
+import clusterers.kmeans;
 import core.MultiDataClustering;
 
 public class AlternateAppMode extends JPanel implements ActionListener {			
@@ -41,6 +50,7 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	//panels
 	//components holding panels
 	JPanel componentsPane = new JPanel(new FlowLayout());
+	JPanel strayPanel = new JPanel(new FlowLayout());
 	
 	//buttons
 	//button switch to one data many algorithm analysis mode
@@ -58,7 +68,7 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 	//select an algorithm
 	JRadioButton radioKmeans, radioHierarchial, radioDbscan, radioFarthestFirst;
 	JRadioButton radioEm, radioCobweb;
-	ButtonGroup groupAlgorithms = new ButtonGroup();
+	ButtonGroup groupAlgorithms = new ButtonGroup();	
 	
 	String selectedAlgorithm = null;
 	
@@ -89,12 +99,12 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		
 		//radio buttons
 		//initialize components
-		radioKmeans = new JRadioButton("KMeans");
-		radioHierarchial = new JRadioButton("Hierarchial");
-		radioEm = new JRadioButton("Em");
-		radioCobweb = new JRadioButton("CobWeb");
-		radioFarthestFirst = new JRadioButton("Farthest First");
-		radioDbscan = new JRadioButton("DBSCAN");
+		radioKmeans = new JRadioButton("KMEANS");
+		radioHierarchial = new JRadioButton("HIERARCHICAL");
+		radioEm = new JRadioButton("EM");
+		radioCobweb = new JRadioButton("COBWEB");
+		radioFarthestFirst = new JRadioButton("FARTHEST FIRST");
+		radioDbscan = new JRadioButton("DBSCAN");		
 		
 		selectFiles.setMultiSelectionEnabled(true);
 		
@@ -106,7 +116,7 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		btnRun.setEnabled(false);
 		
 		//add component listeners
-		addRespectiveListeners();
+		addRespectiveListeners();		
 		
 		//add components to panel
 		addComponents();
@@ -118,6 +128,14 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		btnChooseFiles.addActionListener(this);
 		btnRun.addActionListener(this);
 		btnswitchMode.addActionListener(this);
+		
+		//parameter setting buttons
+		ClustererParameterPanelFactory.btnCob.addActionListener(this);
+		ClustererParameterPanelFactory.btnDbs.addActionListener(this);
+		ClustererParameterPanelFactory.btnEm.addActionListener(this);
+		ClustererParameterPanelFactory.btnFarthest.addActionListener(this);
+		ClustererParameterPanelFactory.btnHie.addActionListener(this);
+		ClustererParameterPanelFactory.btnKms.addActionListener(this);
 		
 		radioKmeans.addActionListener(this);
 		radioCobweb.addActionListener(this);
@@ -160,6 +178,8 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 		//button to run clustering algorithm
 		componentsPane.add(btnRun);
 		
+		componentsPane.add(strayPanel);
+		
 		//add component's panel to this gui-panel
 		add(componentsPane, BorderLayout.CENTER);
 	}
@@ -172,6 +192,14 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 			dispatchAlgorithms.stopWorkerThreads();
 			
 			fr.remove(this);
+			
+			ClustererParameterPanelFactory.btnCob.removeActionListener(this);
+			ClustererParameterPanelFactory.btnDbs.removeActionListener(this);
+			ClustererParameterPanelFactory.btnEm.removeActionListener(this);
+			ClustererParameterPanelFactory.btnFarthest.removeActionListener(this);
+			ClustererParameterPanelFactory.btnHie.removeActionListener(this);
+			ClustererParameterPanelFactory.btnKms.removeActionListener(this);
+			
 			fr.add(new MainDisplayPanel(fr));
 			fr.revalidate();
 		}
@@ -181,7 +209,12 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 				|| e.getSource() == radioCobweb) {
 			
 			JRadioButton evntSrc = (JRadioButton)e.getSource();
-			dispatchAlgorithms.setAlgorithm(evntSrc.getText());
+			String algo = evntSrc.getText();
+			
+			addParametersPane(algo);
+			componentsPane.revalidate();
+			
+			dispatchAlgorithms.setAlgorithm(algo, ClustererParameterPanelFactory.getDefaultParameters(algo));
 			
 			//check if files was choosen? if yes enable run button
 			if(dispatchAlgorithms.getFiles() != null && dispatchAlgorithms.getFiles().length != 0) {
@@ -225,6 +258,87 @@ public class AlternateAppMode extends JPanel implements ActionListener {
 				//fire algorithms
 				dispatchAlgorithms.runAlgorithm();
 			}
+		}
+		else {
+			//event of a button for parameter setting
+			System.out.println(((JButton)e.getSource()).getText());
+			try {
+			handleParameterSetEvent(((JButton)e.getSource()).getText());
+			}
+			catch(NumberFormatException exxc) {
+				JOptionPane.showMessageDialog(fr, "Invalid Parameter. Expected number", "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private void addParametersPane(String algo) {
+		// TODO Auto-generated method stub
+		componentsPane.remove(strayPanel);
+		strayPanel.removeAll();
+		strayPanel.add(ClustererParameterPanelFactory.getParameterPanel(algo));
+			    
+		componentsPane.add(strayPanel);
+	}
+	
+	private void handleParameterSetEvent(String button) throws NumberFormatException {
+		// TODO Auto-generated method stub
+		switch(button) {
+			case "Set Kmeans":
+				String iter = ClustererParameterPanelFactory.k_iter.getText(), 
+						clust = ClustererParameterPanelFactory.k_no_clus.getText(), 
+						seed = ClustererParameterPanelFactory.k_seed.getText();
+				
+				if(iter.length() != 0 && clust.length() != 0 && seed.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("KMEANS", kmeans.setParameters(Double.parseDouble(clust), Double.parseDouble(iter), Double.parseDouble(seed)));
+				}
+				
+				break;
+			case "Set DBSCAN":
+				String epsilon = ClustererParameterPanelFactory.d_eplison.getText(), 
+						minpoint = ClustererParameterPanelFactory.d_minpoint.getText();
+				if(epsilon.length() != 0 && minpoint.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("DBSCAN", DBS.setParameters(Double.parseDouble(epsilon), Double.parseDouble(minpoint)));
+				}
+				
+				break;
+			case "Set COBWEB":
+				String acuity = ClustererParameterPanelFactory.c_acutiy.getText(), 
+						cutoffVal = ClustererParameterPanelFactory.c_cutoff.getText(),
+						seedIng = ClustererParameterPanelFactory.c_seed.getText();
+				if(acuity.length() != 0 && cutoffVal.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("COBWEB", cobweb.setParameters(Double.parseDouble(seedIng), Double.parseDouble(acuity), Double.parseDouble(cutoffVal)));
+				}
+				
+				break;
+				
+			case "Set EM":
+				String seed1 = ClustererParameterPanelFactory.e_seed.getText(), 
+						clusts = ClustererParameterPanelFactory.e_no_clus.getText(), 
+						maxiter = ClustererParameterPanelFactory.e_maxiter.getText(), 
+						minstdDev = ClustererParameterPanelFactory.e_minstdev.getText(); 
+				
+				if(seed1.length() != 0 && clusts.length() != 0 && maxiter.length() != 0 && minstdDev.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("EM", em.setParameters(Double.parseDouble(maxiter), Double.parseDouble(seed1), Double.parseDouble(clusts), Double.parseDouble(minstdDev)));
+				}
+				break;
+				
+			case "Set Farthest":
+				String clusters1 = ClustererParameterPanelFactory.f_no_clus.getText(), 
+						seed2 = ClustererParameterPanelFactory.f_seed.getText();
+				
+				if(clusters1.length() != 0 && seed2.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("FARTHEST FIRST", farthest.setParameters(Double.parseDouble(seed2), Double.parseDouble(clusters1)));
+				}
+				break;
+				
+			case "Set HIERARCHY":
+				String clusters = ClustererParameterPanelFactory.h_no_clus.getText();
+				System.out.println("VIOLA alternate");
+				if(clusters.length() != 0) {
+					dispatchAlgorithms.setAlgorithm("HIERARCHICAL", hierarchy.setParameters(Double.parseDouble(clusters)));
+				}
+				
+				break;
 		}
 	}
 

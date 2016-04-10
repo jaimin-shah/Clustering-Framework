@@ -4,33 +4,28 @@
 package gui;
 
 import core.MultiAlgorithmClustering;
+import clusterers.*;
+
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.io.File;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileFilter;
+import javax.swing.JTextField;
 
 public class MainDisplayPanel extends JPanel implements ActionListener, ItemListener {
 	
@@ -46,7 +41,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//Panels
 	//component holding panel null layout
 	JPanel componentsPane = new JPanel(new FlowLayout());
-	
+    
 	//buttons
 	//button switch to one data many algorithm analysis mode
 	JButton btnswitchMode = new JButton("Switch to Many data one Algorithm");
@@ -66,9 +61,10 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 	//check boxes of algorithms to be selected
 	JCheckBox chkCobweb, chkDbscan, chkKmeans, chkHierarchy, chkFarthestFirst, chkEm;
 	
+	
 	//file chooser
 	JFileChooser selectFiles = new JFileChooser("E:\\Program Files\\Weka-3-6\\data\\");
-	
+    
 	//selected file-path on which clustering needs to be done
 	String selectedFilePath = null;
 	
@@ -95,13 +91,14 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		setLayout(new BorderLayout());
 		
 		//initialize components
-		chkCobweb = new JCheckBox("Cobweb");
+		chkCobweb = new JCheckBox("COBWEB");
 		chkDbscan = new JCheckBox("DBSCAN");
-		chkKmeans = new JCheckBox("KMeans");
-		chkHierarchy = new JCheckBox("Hierarchial");
-		chkFarthestFirst = new JCheckBox("Farthest First");
-		chkEm = new JCheckBox("EM");
-		
+		chkKmeans = new JCheckBox("KMEANS");
+		chkHierarchy = new JCheckBox("HIERARCHICAL");
+		chkFarthestFirst = new JCheckBox("FARTHEST FIRST");
+		chkEm = new JCheckBox("EM");        
+             
+        
 		//customize file filter for specific files
 		selectFiles.setAcceptAllFileFilterUsed(false);
 		selectFiles.addChoosableFileFilter(new ClusteringFileSelectionFilter());
@@ -114,6 +111,7 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		
 		//add this panel to gui frame
 		fr.add(this, BorderLayout.CENTER);
+
 	}
 
 	//assign component's listeners
@@ -123,6 +121,14 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		btnChooseFile.addActionListener(this);
 		btnswitchMode.addActionListener(this);
 		btnClearSelection.addActionListener(this);
+		
+		ClustererParameterPanelFactory.btnCob.addActionListener(this);
+		ClustererParameterPanelFactory.btnDbs.addActionListener(this);
+		ClustererParameterPanelFactory.btnEm.addActionListener(this);
+		ClustererParameterPanelFactory.btnFarthest.addActionListener(this);
+		ClustererParameterPanelFactory.btnHie.addActionListener(this);
+		ClustererParameterPanelFactory.btnKms.addActionListener(this);
+		
 		chkCobweb.addItemListener(this);
 		chkDbscan.addItemListener(this);
 		chkEm.addItemListener(this);
@@ -221,7 +227,16 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			if(dispatchAlgorithms != null) {
 				dispatchAlgorithms.stopWorkerThreads();
 			}
+			
 			fr.remove(this);
+			
+			ClustererParameterPanelFactory.btnCob.removeActionListener(this);
+			ClustererParameterPanelFactory.btnDbs.removeActionListener(this);
+			ClustererParameterPanelFactory.btnEm.removeActionListener(this);
+			ClustererParameterPanelFactory.btnFarthest.removeActionListener(this);
+			ClustererParameterPanelFactory.btnHie.removeActionListener(this);
+			ClustererParameterPanelFactory.btnKms.removeActionListener(this);
+			
 			fr.add(new AlternateAppMode(fr));
 			fr.revalidate();
 			
@@ -231,9 +246,19 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 			selectedFilePath = null;
 			lblFilePath.setText("No File Selected  ");
 		}
+		else {
+			//event of a button for parameter setting
+			System.out.println(((JButton)e.getSource()).getText());
+			try {
+				handleParameterSetEvent(((JButton)e.getSource()).getText());
+			}
+			catch(NumberFormatException exxc) {
+				JOptionPane.showMessageDialog(fr, "Invalid Parameter. Expected number", "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
-	
+
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
@@ -242,17 +267,91 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 		//create instance of dispatcher, occurs only first time a selection is made
 		if(dispatchAlgorithms == null) {
 			dispatchAlgorithms = new MultiAlgorithmClustering();
-			dispatchAlgorithms.addAlgorithms(cb.getText());
+						
+			addParametersPane(cb.getText());
+			componentsPane.revalidate();
 		}
 		else {
 			if(cb.isSelected()) {
-				dispatchAlgorithms.addAlgorithms(cb.getText());
+								
+				addParametersPane(cb.getText());
+				componentsPane.repaint();
+				componentsPane.revalidate();
 			}
 			else {
 				dispatchAlgorithms.removeAlgorithms(cb.getText());
+				removeParametersPane(cb.getText());
+				componentsPane.revalidate();
+				componentsPane.repaint();
 			}
 			
 		}		
+	}
+
+	private void removeParametersPane(String algo) {
+		// TODO Auto-generated method stub
+		componentsPane.remove(ClustererParameterPanelFactory.getParameterPanel(algo));
+	}
+
+	private void addParametersPane(String algo) {
+		// TODO Auto-generated method stub		
+		componentsPane.add(ClustererParameterPanelFactory.getParameterPanel(algo));
+	    dispatchAlgorithms.addAlgorithms(algo, ClustererParameterPanelFactory.getDefaultParameters(algo));
+		
+	}
+	
+	private void handleParameterSetEvent(String button) throws NumberFormatException {
+		// TODO Auto-generated method stub
+		switch(button) {
+			case "Set Kmeans":
+				String iter = ClustererParameterPanelFactory.k_iter.getText(), clust = ClustererParameterPanelFactory.k_no_clus.getText(), seed = ClustererParameterPanelFactory.k_seed.getText();
+				
+				if(iter.length() != 0 && clust.length() != 0 && seed.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("KMEANS", kmeans.setParameters(Double.parseDouble(clust), Double.parseDouble(iter), Double.parseDouble(seed)));
+				}
+				
+				break;
+			case "Set DBSCAN":
+				String epsilon = ClustererParameterPanelFactory.d_eplison.getText(), minpoint = ClustererParameterPanelFactory.d_minpoint.getText();
+				if(epsilon.length() != 0 && minpoint.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("DBSCAN", DBS.setParameters(Double.parseDouble(epsilon), Double.parseDouble(minpoint)));
+				}
+				
+				break;
+			case "Set COBWEB":
+				String acuity = ClustererParameterPanelFactory.c_acutiy.getText(), cutoffVal = ClustererParameterPanelFactory.c_cutoff.getText(),
+				seedIng = ClustererParameterPanelFactory.c_seed.getText();
+				if(acuity.length() != 0 && cutoffVal.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("COBWEB", cobweb.setParameters(Double.parseDouble(seedIng), Double.parseDouble(acuity), Double.parseDouble(cutoffVal)));
+				}
+				
+				break;
+				
+			case "Set EM":
+				String seed1 = ClustererParameterPanelFactory.e_seed.getText(), clusts = ClustererParameterPanelFactory.e_no_clus.getText(), maxiter = ClustererParameterPanelFactory.e_maxiter.getText(), minstdDev = ClustererParameterPanelFactory.e_minstdev.getText(); 
+				
+				if(seed1.length() != 0 && clusts.length() != 0 && maxiter.length() != 0 && minstdDev.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("EM", em.setParameters(Double.parseDouble(maxiter), Double.parseDouble(seed1), Double.parseDouble(clusts), Double.parseDouble(minstdDev)));
+				}
+				break;
+				
+			case "Set Farthest":
+				String clusters1 = ClustererParameterPanelFactory.f_no_clus.getText(), seed2 = ClustererParameterPanelFactory.f_seed.getText();
+				
+				if(clusters1.length() != 0 && seed2.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("FARTHEST FIRST", farthest.setParameters(Double.parseDouble(seed2), Double.parseDouble(clusters1)));
+				}
+				break;
+				
+			case "Set HIERARCHY":
+				String clusters = ClustererParameterPanelFactory.h_no_clus.getText();
+				System.out.println("VIOLA maindisp");
+				if(clusters.length() != 0) {
+					dispatchAlgorithms.addAlgorithms("HIERARCHICAL", hierarchy.setParameters(Double.parseDouble(clusters)));
+				}
+				
+				break;
+		}
 	}
 
 }

@@ -5,32 +5,64 @@
  */
 package clusterers;
 
+import java.util.HashMap;
+
+import core.DataInstancesStore;
 import gui.AttributeSelection_Stats;
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.FarthestFirst;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
+import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class farthest {
-
-    private String filePath;
+	
+	//int seed,int no_of_clusters
     
-    public farthest(String f) {
-    	filePath = f;
-    	try {
-			compute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public farthest() {}
+    
+    //get default parameters for farthest first
+    public static HashMap<String, Double> getDefaults() {
+    	
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	
+    	hm.put("seed", 1.0);
+    	hm.put("no_of_clusters", 3.0);
+    	
+    	return hm;
+
     }
-    private void compute() throws Exception {
+    
+    //set parameters for farthest first
+    public static HashMap<String, Double> setParameters(double seed, double clusters) {
+    	HashMap<String, Double> hm = new HashMap<String, Double>(5);
+    	hm.put("seed", seed);
+    	hm.put("no_of_clusters", clusters);
+    	return hm;
+    }
+    
+  //run algo by providing file path
+    public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
-        Instances dataa = ConverterUtils.DataSource.read(filePath); 
-      
-        FarthestFirst algo=new FarthestFirst();
-      
+    	Instances dataa = null;
+		if(DataInstancesStore.hasDataInstance(filePath)) {
+			dataa = DataInstancesStore.getDataInstanceOf(filePath);
+		}
+		else {
+			dataa = DataInstancesStore.computeDataInstance(filePath);
+		}
+		compute(dataa, hm);
+    }
+    
+    //run algo by providing data instances
+    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    	
+       FarthestFirst algo=  new FarthestFirst();
+
+       algo.setNumClusters(hm.get("no_of_clusters").intValue());
+       algo.setSeed(hm.get("seed").intValue());
+
        
        algo.buildClusterer(dataa);
        ClusterEvaluation eval=new ClusterEvaluation();

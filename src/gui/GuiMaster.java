@@ -17,7 +17,7 @@ public class GuiMaster extends JFrame {
 	
 	public GuiMaster() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(695, 240, 600, 600);
+		setBounds(695, 240, 800, 600);
 		setLayout(new BorderLayout());
 		setTitle("Clustering Framework");
 		
