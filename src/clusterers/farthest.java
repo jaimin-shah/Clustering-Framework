@@ -12,6 +12,7 @@ import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.FarthestFirst;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
+import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class farthest {
@@ -40,11 +41,17 @@ public class farthest {
     	return hm;
     }
     
+  //run algo by providing file path
     public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
-        Instances dataa = ConverterUtils.DataSource.read(filePath); 
-      
-        FarthestFirst algo=new FarthestFirst();
+		Instances dataa = DataSource.read(filePath); 
+		compute(dataa, hm);
+    }
+    
+    //run algo by providing data instances
+    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    	
+       FarthestFirst algo=new FarthestFirst();
       
        algo.setNumClusters(hm.get("no_of_clusters").intValue());
        algo.setSeed(hm.get("seed").intValue());

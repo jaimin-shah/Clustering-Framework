@@ -38,9 +38,15 @@ public class kmeans {
     	return hm;
     }
 
-	public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
-		   
+	//run algo by providing file path
+    public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
+        // TODO code application logic here
 		Instances dataa = DataSource.read(filePath); 
+		compute(dataa, hm);
+    }
+    
+    //run algo by providing data instances
+    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
 		
 		SimpleKMeans kMeans;
 		    // create the model 

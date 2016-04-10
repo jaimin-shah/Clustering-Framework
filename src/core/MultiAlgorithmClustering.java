@@ -2,6 +2,8 @@ package core;
 
 import java.net.URI;
 import clusterers.*;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +20,9 @@ public class MultiAlgorithmClustering {
 	
 	//location of file
 	String filePath;
+	
+	//it's data instance
+	Instances data;
 	
 	//algorithms to be run on data
 	HashMap<String, HashMap<String, Double>> selectedAlgorithms;
@@ -58,9 +63,15 @@ public class MultiAlgorithmClustering {
 		return filePath;
 	}
 	
-	//fil path setter
+	//file path setter
 	public void setFilePath(String f) {
 		filePath = f;
+		try {
+			data = DataSource.read(f);
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 	
 	//run algorithms
@@ -84,7 +95,7 @@ public class MultiAlgorithmClustering {
                                            
                                            try {
                                         	   
-                                        	   dbs.compute(filePath, mapentry.getValue());
+                                        	   dbs.compute(data, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -101,7 +112,7 @@ public class MultiAlgorithmClustering {
                                           cobweb cb = new cobweb(); 
                                           
                                           try {
-											cb.compute(filePath, mapentry.getValue());
+											cb.compute(data, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -118,7 +129,7 @@ public class MultiAlgorithmClustering {
                                            kmeans kms = new kmeans();
                                            
                                            try {
-											kms.compute(filePath, mapentry.getValue());
+											kms.compute(data, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -136,7 +147,7 @@ public class MultiAlgorithmClustering {
                                           hierarchy hry = new hierarchy(); 
                                           
                                           try {
-											hry.compute(filePath, mapentry.getValue());
+											hry.compute(data, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -154,7 +165,7 @@ public class MultiAlgorithmClustering {
                                            farthest ft = new farthest();
                                            
                                            try {
-											ft.compute(filePath, mapentry.getValue());
+											ft.compute(data, mapentry.getValue());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -172,7 +183,7 @@ public class MultiAlgorithmClustering {
                                            em emc = new em();
                                            
                                            try {
-											emc.compute(filePath, mapentry.getValue());											
+											emc.compute(data, mapentry.getValue());											
 											
 										} catch (Exception e) {
 											// TODO Auto-generated catch block

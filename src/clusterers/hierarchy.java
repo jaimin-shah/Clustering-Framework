@@ -12,6 +12,7 @@ import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.HierarchicalClusterer;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils;
+import weka.core.converters.ConverterUtils.DataSource;
 
 
 public class hierarchy {
@@ -36,11 +37,17 @@ public class hierarchy {
     	return hm;
     }
     
+  //run algo by providing file path
     public void compute(String filePath, HashMap<String, Double> hm) throws Exception {
         // TODO code application logic here
-        Instances dataa = ConverterUtils.DataSource.read(filePath); 
-      
-        HierarchicalClusterer algo = new HierarchicalClusterer();
+		Instances dataa = DataSource.read(filePath); 
+		compute(dataa, hm);
+    }
+    
+    //run algo by providing data instances
+    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    	
+       HierarchicalClusterer algo = new HierarchicalClusterer();
       
        algo.setNumClusters(hm.get("no_of_clusters").intValue());
        algo.buildClusterer(dataa);
