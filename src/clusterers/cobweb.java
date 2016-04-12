@@ -58,11 +58,11 @@ public class cobweb {
 			dataa = DataInstancesStore.computeDataInstance(filePath);
 		}
 		
-		compute(dataa, hm);
+		compute(dataa, hm,filePath);
     }
     
     //run algo by providing data instances
-    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    public void compute(Instances dataa, HashMap<String, Double> hm,String filePath) throws Exception {
     	
     	Cobweb algo=new Cobweb();
  	   
@@ -77,7 +77,7 @@ public class cobweb {
 	    
 	    double[] p=eval.getClusterAssignments();
 	    new AttributeSelection_Stats(dataa, eval, "COBWEB", p);
-	    
+	    DataInstancesStore.remove(filePath);
 		dataa=null;
 		eval=null;
 		algo=null;

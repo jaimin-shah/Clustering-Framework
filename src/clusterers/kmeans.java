@@ -47,11 +47,11 @@ public class kmeans {
 		else {
 			dataa = DataInstancesStore.computeDataInstance(filePath);
 		}
-		compute(dataa, hm);
+		compute(dataa, hm,filePath);
     }
     
     //run algo by providing data instances
-    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    public void compute(Instances dataa, HashMap<String, Double> hm,String filePath) throws Exception {
 		
 		SimpleKMeans kMeans;
 		    // create the model 
@@ -66,6 +66,7 @@ public class kmeans {
 		double p[]=eval.getClusterAssignments();
 		
 		new AttributeSelection_Stats(dataa, eval, "KMEANS", p);
+                DataInstancesStore.remove(filePath);
 		dataa=null;
 		eval=null;
 		kMeans=null;

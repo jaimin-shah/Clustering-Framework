@@ -18,6 +18,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -215,8 +217,12 @@ public class MainDisplayPanel extends JPanel implements ActionListener, ItemList
 								"FATAL ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
-						//dispatch algorithms with selected file
-						dispatchAlgorithms.setFilePath(selectedFilePath);
+                                            try {
+                                                //dispatch algorithms with selected file
+                                                dispatchAlgorithms.setFilePath(selectedFilePath);
+                                            } catch (Exception ex) {
+                                                Logger.getLogger(MainDisplayPanel.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
 						dispatchAlgorithms.runAlgorithms();
 					}
 				}

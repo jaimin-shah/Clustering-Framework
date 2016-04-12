@@ -52,11 +52,11 @@ public class DBS {
 		else {
 			dataa = DataInstancesStore.computeDataInstance(filePath);
 		}
-		compute(dataa, hm);
+		compute(dataa, hm, filePath);
     }
     
     //run algo by providing data instances
-    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    public void compute(Instances dataa, HashMap<String, Double> hm,String filePath) throws Exception {
 
 		DBSCAN DBS;
 		// create the model 
@@ -77,6 +77,8 @@ public class DBS {
 		dataa=null;
 		eval=null;
 		DBS=null;
+                
+                DataInstancesStore.remove(filePath);
 		Runtime.getRuntime().gc();
 		System.runFinalization ();
 

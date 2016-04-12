@@ -48,11 +48,11 @@ public class hierarchy {
 		else {
 			dataa = DataInstancesStore.computeDataInstance(filePath);
 		}
-		compute(dataa, hm);
+		compute(dataa, hm,filePath);
     }
     
     //run algo by providing data instances
-    public void compute(Instances dataa, HashMap<String, Double> hm) throws Exception {
+    public void compute(Instances dataa, HashMap<String, Double> hm,String filePath) throws Exception {
     	
        HierarchicalClusterer algo = new HierarchicalClusterer();
       
@@ -64,6 +64,7 @@ public class hierarchy {
        eval.evaluateClusterer(dataa);
        double[] p=eval.getClusterAssignments();
        new AttributeSelection_Stats(dataa, eval, "Hirtarchical Clustering", p);  
+       DataInstancesStore.remove(filePath);
        dataa=null;
        eval=null;
        algo=null;

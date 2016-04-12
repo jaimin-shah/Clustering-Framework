@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
 import javax.swing.text.html.HTMLDocument.Iterator;
@@ -61,8 +63,12 @@ public class MultiAlgorithmClustering {
 	}
 	
 	//file path setter
-	public void setFilePath(String f) {
+	public void setFilePath(String f) throws Exception {
 		filePath = f;
+                
+            DataInstancesStore.InitializeDataInstance(filePath);
+                        
+               
 	}
 	
 	//run algorithms
