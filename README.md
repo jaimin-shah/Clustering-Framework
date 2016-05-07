@@ -5,5 +5,5 @@ A small API containing collection of clustering algorithms ( as implemented in w
 ####To run project directly(without setting up project) from jar refer jar of standalone folder
  Run command "java -jar standalone.jar"
  
-###For information about libraries refer libs folder
+####For information about libraries refer libs folder
   
